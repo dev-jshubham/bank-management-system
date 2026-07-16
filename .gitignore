@@ -5,6 +5,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
+src/DBConnection.java
 
 ### Eclipse ###
 .apt_generated
