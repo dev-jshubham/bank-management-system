@@ -79,7 +79,9 @@ BANK-MANAGEMENT-SYSTEM/
 │   ├── AdminService.java          # Admin-side operations
 │   └── DBConnectionExample.java   # Database connection template
 │
-├── database.sql                   # Database & table creation script
+├── database/
+│   └── schema.sql           # Database & table creation script
+|
 ├── .gitignore                     # Git ignored files
 └── README.md                      # Project documentation
 ```
