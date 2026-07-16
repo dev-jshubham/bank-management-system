@@ -1,6 +1,10 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Customer {
+    public enum Gender{
+        Male, Female,  Other
+    }
     private final int customerId;
     private String name;
     private LocalDate dob;
@@ -11,12 +15,12 @@ public class Customer {
     private String idProofType;
     private String idProofNumber;
     private String password;
-    private final LocalDate registrationDate;
+    private final LocalDateTime registrationDate;
     private boolean active;
 
     public Customer(int customerId) {
         this.customerId = customerId;
-        this.registrationDate = LocalDate.now();
+        this.registrationDate = LocalDateTime.now();
         this.active = true;
     }
 
@@ -40,11 +44,11 @@ public class Customer {
         this.dob = dob;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -96,7 +100,7 @@ public class Customer {
         this.password = password;
     }
 
-    public LocalDate getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 

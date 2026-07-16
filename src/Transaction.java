@@ -1,20 +1,26 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Transaction {
+    public enum TransactionType{
+        DEPOSIT,
+        WITHDRAW,
+        TRANSFER_IN,
+        TRANSFER_OUT
+    }
     private final int transactionId;
     private final String accountNumber;
-    private final String transactionType;
+    private final TransactionType transactionType;
     private final double amount;
     private final double balanceAfter;
-    private final LocalDate transactionDate;
+    private final LocalDateTime transactionDate;
 
-    public Transaction(int transactionId, String accountNumber, String transactionType, double amount, double balanceAfter, LocalDate transactionDate) {
-        this.transactionId = transactionId;
+    public Transaction(int transactionId, String accountNumber, TransactionType transactionType, double amount, double balanceAfter, LocalDateTime transactionDate) {
+        this.transactionId = 0;
         this.accountNumber = accountNumber;
         this.transactionType = transactionType;
         this.amount = amount;
         this.balanceAfter = balanceAfter;
-        this.transactionDate = transactionDate;
+        this.transactionDate = LocalDateTime.now();
     }
 
     public int getTransactionId() {
@@ -25,7 +31,7 @@ public class Transaction {
         return amount;
     }
 
-    public String getTransactionType() {
+    public TransactionType getTransactionType() {
         return transactionType;
     }
 
@@ -37,7 +43,7 @@ public class Transaction {
         return balanceAfter;
     }
 
-    public LocalDate getTransactionDate() {
+    public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
 

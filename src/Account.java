@@ -1,21 +1,33 @@
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Account {
+
+    public enum AccountType{
+        SavingsAccount,
+        CurrentAccount
+    }
+
+    public enum Status{
+        ACTIVE,
+        BLOCKED,
+        CLOSED
+    }
+
     private final String accountNumber;
     private final int customerId;
-    private final String accountType;
+    private final AccountType accountType;
     private double balance;
-    private String status;
-    private final LocalDate openedDate;
+    private Status status;
+    private final LocalDateTime openedDate;
     private String pin;
 
-    public Account(String accountNumber, int customerId, String accountType , int initialAmount ) {
+    public Account(String accountNumber, int customerId, AccountType accountType , double initialAmount ) {
         this.accountNumber = accountNumber;
         this.customerId = customerId;
         this.accountType = accountType;
         this.balance = initialAmount;
-        this.openedDate = LocalDate.now();
-        this.status = "Active";
+        this.openedDate = LocalDateTime.now();
+        this.status = Status.ACTIVE;
     }
 
     public String getAccountNumber() {
@@ -26,7 +38,7 @@ public class Account {
         return customerId;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 
@@ -38,15 +50,15 @@ public class Account {
         this.balance = balance;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public LocalDate getOpenedDate() {
+    public LocalDateTime getOpenedDate() {
         return openedDate;
     }
 
