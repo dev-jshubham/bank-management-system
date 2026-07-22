@@ -3,9 +3,9 @@ import java.time.LocalDateTime;
 
 public class Customer {
     public enum Gender{
-        Male, Female,  Other
+        MALE, FEMALE, OTHER
     }
-    private final int customerId;
+    private int customerId;
     private String name;
     private LocalDate dob;
     private Gender gender;
@@ -18,10 +18,19 @@ public class Customer {
     private final LocalDateTime registrationDate;
     private boolean active;
 
-    public Customer(int customerId) {
-        this.customerId = customerId;
+    public Customer() {
         this.registrationDate = LocalDateTime.now();
         this.active = true;
+    }
+
+    public Customer(int customerId, LocalDateTime registrationDate, boolean active) {
+        this.customerId = customerId;
+        this.registrationDate = registrationDate;
+        this.active = active;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public int getCustomerId() {

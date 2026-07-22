@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS customer(
                              customerId INT PRIMARY KEY auto_increment,
                              name varchar(30) NOT NULL,
                              dob DATE NOT NULL,
-                             gender ENUM('Male', 'Female', 'Other') NOT NULL,
+                             gender ENUM('MALE', 'FEMALE', 'OTHER') NOT NULL,
                              phoneNumber varchar(13) unique NOT NULL,
                              email varchar(30) unique,
                              address varchar(50) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS customer(
 CREATE TABLE IF NOT EXISTS account(
                             accountNumber varchar(12) primary key,
                             customerId int not null,
-                            accountType enum('SavingsAccount','CurrentAccount') not null,
+                            accountType enum('SAVINGS','CURRENT') not null,
                             balance decimal(12,2) not null,
                             status ENUM('ACTIVE','BLOCKED','CLOSED') not null default 'ACTIVE',
                             openedDate datetime not null,

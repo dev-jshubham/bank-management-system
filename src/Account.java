@@ -3,8 +3,8 @@ import java.time.LocalDateTime;
 public class Account {
 
     public enum AccountType{
-        SavingsAccount,
-        CurrentAccount
+        SAVINGS,
+        CURRENT
     }
 
     public enum Status{
