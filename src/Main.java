@@ -16,20 +16,30 @@ public class Main {
         CustomerDAO dao = new CustomerDAO();
 //        dao.addCustomer(customer);
         Customer fetchedCustomer = dao.getCustomerById(1);
-        if(fetchedCustomer!=null){
-            System.out.println("Customer ID: " + fetchedCustomer.getCustomerId());
-            System.out.println("Name: " + fetchedCustomer.getName());
-            System.out.println("DOB: " + fetchedCustomer.getDob());
-            System.out.println("Gender: " + fetchedCustomer.getGender());
-            System.out.println("Phone: " + fetchedCustomer.getPhoneNumber());
-            System.out.println("Email: " + fetchedCustomer.getEmail());
-            System.out.println("Address: " + fetchedCustomer.getAddress());
-            System.out.println("ID Proof: " +fetchedCustomer.getIdProofType() +" - "+fetchedCustomer.getIdProofNumber());
-            System.out.println("Registered: " + fetchedCustomer.getRegistrationDate());
-            System.out.println("Active: " + fetchedCustomer.isActive());
-        }
-        else{
-            System.out.println("Customer not found.");
-        }
+//        if(fetchedCustomer!=null){
+//            System.out.println("Customer ID: " + fetchedCustomer.getCustomerId());
+//            System.out.println("Name: " + fetchedCustomer.getName());
+//            System.out.println("DOB: " + fetchedCustomer.getDob());
+//            System.out.println("Gender: " + fetchedCustomer.getGender());
+//            System.out.println("Phone: " + fetchedCustomer.getPhoneNumber());
+//            System.out.println("Email: " + fetchedCustomer.getEmail());
+//            System.out.println("Address: " + fetchedCustomer.getAddress());
+//            System.out.println("ID Proof: " +fetchedCustomer.getIdProofType() +" - "+fetchedCustomer.getIdProofNumber());
+//            System.out.println("Registered: " + fetchedCustomer.getRegistrationDate());
+//            System.out.println("Active: " + fetchedCustomer.isActive());
+//        }
+//        else{
+//            System.out.println("Customer not found.");
+//        }
+
+        Account account = new Account(
+                "123456789101",
+                fetchedCustomer.getCustomerId(),
+                Account.AccountType.SAVINGS,
+                5000.45
+        );
+        account.setPin("1997");
+        AccountDAO accountDAO = new AccountDAO();
+        accountDAO.createAccount(account);
     }
 }
