@@ -21,13 +21,22 @@ public class Account {
     private final LocalDateTime openedDate;
     private String pin;
 
-    public Account(String accountNumber, int customerId, AccountType accountType , double initialAmount ) {
+    public Account(String accountNumber, int customerId, AccountType accountType, double balance) {
         this.accountNumber = accountNumber;
         this.customerId = customerId;
         this.accountType = accountType;
-        this.balance = initialAmount;
+        this.balance = balance;
         this.openedDate = LocalDateTime.now();
         this.status = Status.ACTIVE;
+    }
+
+    public Account(String accountNumber, int customerId, AccountType accountType , double balance, LocalDateTime openedDate, Status status) {
+        this.accountNumber = accountNumber;
+        this.customerId = customerId;
+        this.accountType = accountType;
+        this.balance = balance;
+        this.openedDate = openedDate;
+        this.status = status;
     }
 
     public String getAccountNumber() {
@@ -68,6 +77,18 @@ public class Account {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    @Override
+    public String toString() {
+        return "Account Details\n" +
+                "-------------------------------------------------\n" +
+                "Account Number : " + accountNumber + "\n" +
+                "Customer ID    : " + customerId + "\n" +
+                "Account Type   : " + accountType + "\n" +
+                "Balance        : ₹" + balance + "\n" +
+                "Status         : " + status + "\n" +
+                "Opened Date    : " + openedDate + "\n";
     }
 
 }

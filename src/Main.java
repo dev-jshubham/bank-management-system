@@ -40,6 +40,14 @@ public class Main {
         );
         account.setPin("1997");
         AccountDAO accountDAO = new AccountDAO();
-        accountDAO.createAccount(account);
+        Account fetchedAccount = accountDAO.getAccountById(account.getAccountNumber());
+        if(fetchedAccount!=null){
+            System.out.println(fetchedAccount);
+        }
+        else{
+            System.out.println("Account not found.");
+        }
+//
+//        accountDAO.createAccount(account);
     }
 }
