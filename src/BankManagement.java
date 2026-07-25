@@ -108,9 +108,7 @@ public class BankManagement {
             int select = checkInt();
             switch (select) {
                 case 1 -> register();
-                case 2 -> {
-
-                }
+                case 2 -> view();
                 case 3 -> {
                 }
                 case 4 -> {
@@ -145,6 +143,17 @@ public class BankManagement {
             System.out.println("Enter password");
                 customer.setPassword(checkString());
             customerDAO.addCustomer(customer);
+        }
+
+        public void view(){
+            System.out.println("Enter the ID of customer:");
+            Customer fetchedCustomer = customerDAO.getCustomerById(checkInt());
+            if(fetchedCustomer!=null){
+                System.out.println(fetchedCustomer);
+            }
+            else{
+                System.out.println("Customer not found.");
+            }
         }
 
 }
