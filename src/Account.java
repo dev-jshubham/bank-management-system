@@ -82,7 +82,7 @@ public class Account {
     @Override
     public String toString() {
         return "Account Details\n" +
-                "-------------------------------------------------\n" +
+                "-------------------------\n" +
                 "Account Number : " + accountNumber + "\n" +
                 "Customer ID    : " + customerId + "\n" +
                 "Account Type   : " + accountType + "\n" +

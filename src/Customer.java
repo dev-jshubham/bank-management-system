@@ -121,5 +121,20 @@ public class Customer {
         this.active = active;
     }
 
+    @Override
+    public String toString() {
+        return "Customer Details\n" +
+                "-------------------------\n" +
+                "Customer ID    : " + customerId + "\n" +
+                "Name           : " + name + "\n" +
+                "DOB            : " + dob + "\n" +
+                "Gender         : " + gender + "\n" +
+                "Phone Number   : " + phoneNumber + "\n" +
+                "Email          : " + email + "\n" +
+                "Address        : " + address + "\n" +
+                "ID Proof       : " + idProofType + " - " + idProofNumber + "\n" +
+                "Registered On  : " + registrationDate + "\n" +
+                "Active         : " + (active ? "Yes" : "No");
+    }
 
 }
