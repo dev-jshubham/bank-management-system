@@ -52,6 +52,18 @@ public class BankManagement {
         }
     }
 
+    public String checkAccountNumber() {
+        while (true) {
+            String input = sc.nextLine().trim();
+            if (input.matches("ACC\\d{4}")){
+                return input;
+            }
+            else {
+                System.out.println("Invalid account number! Enter a valid account number.");
+            }
+        }
+    }
+
     public String checkPhoneNumberString() {
         while (true) {
             System.out.print("+91 ");
@@ -68,6 +80,17 @@ public class BankManagement {
         while (true) {
             String input = sc.nextLine().trim();
             if (input.matches("\\d+") && input.length() ==4) {
+                return input;
+            } else {
+                System.out.println("Invalid Input! Please try again.");
+            }
+        }
+    }
+
+    public String checkPassword() {
+        while (true) {
+            String input = sc.nextLine().trim();
+            if (input.length() ==8) {
                 return input;
             } else {
                 System.out.println("Invalid Input! Please try again.");
@@ -96,12 +119,16 @@ public class BankManagement {
         }
     }
 
-    public double checkDouble() {
+    public double checkInitialAmount() {
         while (true) {
             try {
-                return Double.parseDouble(sc.nextLine());
+                double initialAmount = Double.parseDouble(sc.nextLine());
+                if (initialAmount >= 5000) {
+                    return initialAmount;
+                }
+                System.out.println("Minimum initial deposit is ₹5000.");
             } catch (NumberFormatException e) {
-                System.out.println("Invalid Input! Please enter a valid amount.");
+                System.out.println("Invalid amount! Please enter a valid number.");
             }
         }
     }
@@ -160,7 +187,7 @@ public class BankManagement {
             System.out.println("Enter proof number:");
             customer.setIdProofNumber(checkNumberString());
             System.out.println("Enter password");
-                customer.setPassword(checkString());
+                customer.setPassword(checkPassword());
             customerDAO.addCustomer(customer);
         }
 
@@ -182,8 +209,8 @@ public class BankManagement {
                 System.out.println("Customer not found.");
                 return;
             }
-            System.out.println("Enter account number:");
-            String accountNumber = checkString();
+            System.out.println("Enter your account number (e.g. ACC0000) :");
+            String accountNumber = checkAccountNumber();
             System.out.println("Select Account Type:");
             System.out.println("1. Savings");
             System.out.println("2. Current");
@@ -197,8 +224,8 @@ public class BankManagement {
                     return;
                 }
             }
-            System.out.print("Enter Initial Deposit: ");
-            double balance = checkDouble();
+            System.out.print("Enter Initial Deposit (minimum : ₹5000) : ");
+            double balance = checkInitialAmount();
             Account account = new Account(
                     accountNumber,
                     fetchedCustomer.getCustomerId(),
@@ -211,10 +238,10 @@ public class BankManagement {
         }
 
         public void viewAccount(){
-            System.out.println("Enter your account number:");
-            Account fetchedCustomer = accountDAO.getAccountById(checkString());
-            if(fetchedCustomer!=null){
-                System.out.println(fetchedCustomer);
+            System.out.println("Enter your account number (e.g. ACC0000) :");
+            Account fetchedAccount = accountDAO.getAccountById(checkString());
+            if(fetchedAccount !=null){
+                System.out.println(fetchedAccount);
             }
             else{
                 System.out.println("Account not found.");
