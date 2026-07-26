@@ -64,6 +64,17 @@ public class BankManagement {
         }
     }
 
+    public String checkPinString() {
+        while (true) {
+            String input = sc.nextLine().trim();
+            if (input.matches("\\d+") && input.length() ==4) {
+                return input;
+            } else {
+                System.out.println("Invalid Input! Please try again.");
+            }
+        }
+    }
+
     public LocalDate checkDate(){
         while(true) {
             try {
@@ -81,6 +92,16 @@ public class BankManagement {
                 return name;
             } else {
                 System.out.println("Invalid Input! Please try again.");
+            }
+        }
+    }
+
+    public double checkDouble() {
+        while (true) {
+            try {
+                return Double.parseDouble(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Input! Please enter a valid amount.");
             }
         }
     }
@@ -107,12 +128,10 @@ public class BankManagement {
             System.out.print("\nEnter your choice: ");
             int select = checkInt();
             switch (select) {
-                case 1 -> register();
-                case 2 -> view();
-                case 3 -> {
-                }
-                case 4 -> {
-                }
+                case 1 -> registerCustomer();
+                case 2 -> viewCustomer();
+                case 3 -> openAccount();
+                case 4 -> viewAccount();
                 case 5 -> {
                     System.out.println("Thank you for coming.....");
                     return;
@@ -122,7 +141,7 @@ public class BankManagement {
         }
     }
 
-        private void register(){
+        private void registerCustomer(){
             Customer customer = new Customer();
             System.out.println("Enter Name: ");
                 customer.setName(checkName());
@@ -145,7 +164,7 @@ public class BankManagement {
             customerDAO.addCustomer(customer);
         }
 
-        public void view(){
+        public void viewCustomer(){
             System.out.println("Enter the ID of customer:");
             Customer fetchedCustomer = customerDAO.getCustomerById(checkInt());
             if(fetchedCustomer!=null){
@@ -156,5 +175,50 @@ public class BankManagement {
             }
         }
 
+        public void openAccount(){
+            System.out.println("Enter Customer ID:");
+            Customer fetchedCustomer = customerDAO.getCustomerById(checkInt());
+            if(fetchedCustomer==null){
+                System.out.println("Customer not found.");
+                return;
+            }
+            System.out.println("Enter account number:");
+            String accountNumber = checkString();
+            System.out.println("Select Account Type:");
+            System.out.println("1. Savings");
+            System.out.println("2. Current");
+            int choice = checkInt();
+            Account.AccountType type;
+            switch(choice){
+                case 1-> type =  Account.AccountType.SAVINGS;
+                case 2-> type =  Account.AccountType.CURRENT;
+                default -> {
+                    System.out.println("Invalid account type.");
+                    return;
+                }
+            }
+            System.out.print("Enter Initial Deposit: ");
+            double balance = checkDouble();
+            Account account = new Account(
+                    accountNumber,
+                    fetchedCustomer.getCustomerId(),
+                    type,
+                    balance
+            );
+            System.out.println("Enter PIN:");
+            account.setPin(checkPinString());
+            accountDAO.createAccount(account);
+        }
+
+        public void viewAccount(){
+            System.out.println("Enter your account number:");
+            Account fetchedCustomer = accountDAO.getAccountById(checkString());
+            if(fetchedCustomer!=null){
+                System.out.println(fetchedCustomer);
+            }
+            else{
+                System.out.println("Account not found.");
+            }
+        }
 }
 
