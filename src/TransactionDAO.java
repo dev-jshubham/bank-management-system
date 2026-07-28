@@ -1,4 +1,7 @@
+import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransactionDAO {
 
@@ -26,4 +29,35 @@ public class TransactionDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Transaction> transactionHistory(String accountNumber){
+        List<Transaction> transactionList = new ArrayList<>();
+        String sql = "SELECT * FROM transaction WHERE accountNumber = ? ORDER BY transactionDate DESC;";
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        )
+        {
+            preparedStatement.setString(1,accountNumber);
+            try(
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            ){
+                while(resultSet.next()){
+                    Transaction transaction = new Transaction(
+                            resultSet.getInt("transactionId"),
+                            resultSet.getString("accountNumber"),
+                            Transaction.TransactionType.valueOf(resultSet.getString("transactionType")),
+                            resultSet.getDouble("amount"),
+                            resultSet.getDouble("balanceAfter"),
+                            resultSet.getTimestamp("transactionDate").toLocalDateTime()
+                    );
+                    transactionList.add(transaction);
+                }
+                return transactionList;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
 }
