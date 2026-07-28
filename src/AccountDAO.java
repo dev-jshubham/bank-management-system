@@ -5,7 +5,8 @@ public class AccountDAO {
     public void createAccount(Account account){
         String sql = "INSERT INTO account(accountNumber, accountType, balance, status, openedDate, pin,customerId) VALUES(?,?,?,?,?,?,?);";
         try (
-            Connection connection = DBConnection.getConnection();PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            Connection connection = DBConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
             )
             {
                 preparedStatement.setString(1,account.getAccountNumber());
@@ -27,7 +28,8 @@ public class AccountDAO {
         public Account getAccountById(String accountNumber){
             String sql = "SELECT * FROM account WHERE accountNumber = ?;";
             try (
-                    Connection connection = DBConnection.getConnection();PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    Connection connection = DBConnection.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
             )
             {
              preparedStatement.setString(1, accountNumber);
@@ -50,6 +52,52 @@ public class AccountDAO {
              return null;
             } catch (SQLException e) {
                 throw new RuntimeException();
+            }
+        }
+
+        public void deposit(String accountNumber, Double money) {
+            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
+            Connection connection = null;
+            try {
+                connection = DBConnection.getConnection();
+                connection.setAutoCommit(false);
+                Double newBalance = money + getAccountById(accountNumber).getBalance();
+                try(
+                        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ){
+                    preparedStatement.setDouble(1,newBalance);
+                    preparedStatement.setString(2, accountNumber);
+                    preparedStatement.executeUpdate();
+                }
+                Transaction transaction = new Transaction(
+                        accountNumber,
+                        Transaction.TransactionType.DEPOSIT,
+                        money,
+                        newBalance
+                );
+                TransactionDAO transactionDAO = new TransactionDAO();
+                transactionDAO.doTransaction(connection,transaction);
+                connection.commit();
+                System.out.println("Deposit Successful.");
+                System.out.println("Updated Balance : ₹"+newBalance);
+            } catch (SQLException e) {
+                if(connection!=null){
+                    try {
+                        connection.rollback();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                    e.printStackTrace();
+            }
+            finally {
+                if(connection!=null){
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 }

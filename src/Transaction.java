@@ -67,4 +67,16 @@ public class Transaction {
         return transactionDate;
     }
 
+    @Override
+    public String toString() {
+        return "Transaction Details\n" +
+                "-------------------------\n" +
+                "Transaction ID : " + transactionId + "\n" +
+                "Account Number : " + accountNumber + "\n" +
+                "Type           : " + transactionType + "\n" +
+                "Amount         : ₹" + amount + "\n" +
+                "Balance After  : ₹" + balanceAfter + "\n" +
+                "Date           : " + transactionDate + "\n";
+    }
+
 }

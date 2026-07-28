@@ -133,6 +133,17 @@ public class BankManagement {
         }
     }
 
+    public double checkMoney() {
+        while (true) {
+            try {
+                    return Double.parseDouble(sc.nextLine());
+                }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid amount! Please enter a valid number.");
+            }
+        }
+    }
+
     public Customer.Gender checkGender() {
         while (true) {
             try{
@@ -150,7 +161,8 @@ public class BankManagement {
             System.out.println("2. View Customer");
             System.out.println("3. Open Account");
             System.out.println("4. View Account");
-            System.out.println("5. Exit");
+            System.out.println("5. Deposit Money");
+            System.out.println("6. Exit");
 
             System.out.print("\nEnter your choice: ");
             int select = checkInt();
@@ -159,7 +171,8 @@ public class BankManagement {
                 case 2 -> viewCustomer();
                 case 3 -> openAccount();
                 case 4 -> viewAccount();
-                case 5 -> {
+                case 5 -> depositMoney();
+                case 6 -> {
                     System.out.println("Thank you for coming.....");
                     return;
                 }
@@ -168,7 +181,7 @@ public class BankManagement {
         }
     }
 
-        private void registerCustomer(){
+    private void registerCustomer(){
             Customer customer = new Customer();
             System.out.println("Enter Name: ");
                 customer.setName(checkName());
@@ -247,5 +260,22 @@ public class BankManagement {
                 System.out.println("Account not found.");
             }
         }
+
+    private void depositMoney() {
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        String accountNumber = checkString();
+        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
+        if(fetchedAccount !=null){
+            System.out.println(fetchedAccount);
+        }
+        else{
+            System.out.println("Account not found.");
+            return;
+        }
+        System.out.println("Enter amount:");
+        Double money = checkMoney();
+        accountDAO.deposit(accountNumber,money);
+    }
+
 }
 

@@ -1,18 +1,18 @@
 import java.sql.*;
 
 public class TransactionDAO {
-    public void doTransaction(Transaction transaction){
-        String sql = "INSERT INTO account(transactionId, accountNumber, transactionType, amount, balanceAfter, transactionDate) VALUES(?,?,?,?,?,?);";
+
+    public void doTransaction(Connection connection, Transaction transaction){
+        String sql = "INSERT INTO transaction (accountNumber, transactionType, amount, balanceAfter, transactionDate) VALUES(?,?,?,?,?);";
         try (
-                Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
         )
         {
-            preparedStatement.setInt(1,transaction.getTransactionId());
-            preparedStatement.setString(2,transaction.getAccountNumber());
-            preparedStatement.setString(3,transaction.getTransactionType().name());
-            preparedStatement.setDouble(4,transaction.getAmount());
-            preparedStatement.setDouble(5, transaction.getBalanceAfter());
-            preparedStatement.setTimestamp(6, Timestamp.valueOf(transaction.getTransactionDate()));
+            preparedStatement.setString(1,transaction.getAccountNumber());
+            preparedStatement.setString(2,transaction.getTransactionType().name());
+            preparedStatement.setDouble(3,transaction.getAmount());
+            preparedStatement.setDouble(4, transaction.getBalanceAfter());
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
             int rows = preparedStatement.executeUpdate();
             if(rows>0){
                 ResultSet generatedKey = preparedStatement.getGeneratedKeys();
