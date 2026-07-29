@@ -280,7 +280,18 @@ public class BankManagement {
     }
 
     private void withdrawMoney() {
-        System.out.println("Currently working in this feature.");
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        String accountNumber = checkString();
+        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
+        if (fetchedAccount != null) {
+            System.out.println(fetchedAccount);
+        } else {
+            System.out.println("Account not found.");
+            return;
+        }
+        System.out.println("Enter amount:");
+        Double money = checkMoney();
+        accountDAO.withdraw(accountNumber, money);
     }
 
     private void transferMoney() {

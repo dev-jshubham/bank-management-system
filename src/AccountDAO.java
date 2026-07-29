@@ -100,4 +100,50 @@ public class AccountDAO {
                 }
             }
         }
+
+        public void withdraw(String accountNumber, Double money){
+            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
+            Connection connection = null;
+            try {
+                connection = DBConnection.getConnection();
+                connection.setAutoCommit(false);
+                Double newBalance = getAccountById(accountNumber).getBalance() - money;
+                try(
+                        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                        ){
+                    preparedStatement.setDouble(1,newBalance);
+                    preparedStatement.setString(2,accountNumber);
+                    preparedStatement.executeUpdate();
+                }
+                Transaction transaction = new Transaction(
+                        accountNumber,
+                        Transaction.TransactionType.WITHDRAW,
+                        money,
+                        newBalance
+                );
+                TransactionDAO transactionDAO = new TransactionDAO();
+                transactionDAO.doTransaction(connection,transaction);
+                connection.commit();
+                System.out.println("Withdrawal Successful.");
+                System.out.println("Updated Balance : ₹"+newBalance);
+            } catch (SQLException e) {
+                if(connection!=null){
+                    try {
+                        connection.rollback();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                e.printStackTrace();
+            }
+            finally {
+                if(connection!=null){
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
 }
