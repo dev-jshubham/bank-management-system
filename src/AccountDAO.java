@@ -55,8 +55,8 @@ public class AccountDAO {
             }
         }
 
-        public void deposit(String accountNumber, Double money) {
-            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
+        public void deposit(String accountNumber, Double money, String pin) {
+            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
             Connection connection = null;
             try {
                 connection = DBConnection.getConnection();
@@ -67,7 +67,14 @@ public class AccountDAO {
                 ){
                     preparedStatement.setDouble(1,newBalance);
                     preparedStatement.setString(2, accountNumber);
+                    preparedStatement.setString(3, pin);
                     preparedStatement.executeUpdate();
+                    int rows = preparedStatement.executeUpdate();
+                    if (rows == 0) {
+                        System.out.println("Invalid account number or PIN.");
+                        connection.rollback();
+                        return;
+                    }
                 }
                 Transaction transaction = new Transaction(
                         accountNumber,
@@ -101,8 +108,8 @@ public class AccountDAO {
             }
         }
 
-        public void withdraw(String accountNumber, Double money){
-            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
+        public void withdraw(String accountNumber, Double money, String pin){
+            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
             Connection connection = null;
             try {
                 connection = DBConnection.getConnection();
@@ -113,7 +120,13 @@ public class AccountDAO {
                         ){
                     preparedStatement.setDouble(1,newBalance);
                     preparedStatement.setString(2,accountNumber);
-                    preparedStatement.executeUpdate();
+                    preparedStatement.setString(3,pin);
+                    int rows = preparedStatement.executeUpdate();
+                    if (rows == 0) {
+                        System.out.println("Invalid account number or PIN.");
+                        connection.rollback();
+                        return;
+                    }
                 }
                 Transaction transaction = new Transaction(
                         accountNumber,

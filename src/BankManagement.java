@@ -276,7 +276,9 @@ public class BankManagement {
         }
         System.out.println("Enter amount:");
         Double money = checkMoney();
-        accountDAO.deposit(accountNumber, money);
+        System.out.println("Enter PIN:");
+        String pin = checkPinString();
+        accountDAO.deposit(accountNumber, money, pin);
     }
 
     private void withdrawMoney() {
@@ -291,7 +293,9 @@ public class BankManagement {
         }
         System.out.println("Enter amount:");
         Double money = checkMoney();
-        accountDAO.withdraw(accountNumber, money);
+        System.out.println("Enter PIN:");
+        String pin = checkPinString();
+        accountDAO.withdraw(accountNumber, money,pin);
     }
 
     private void transferMoney() {
