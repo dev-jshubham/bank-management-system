@@ -159,4 +159,81 @@ public class AccountDAO {
                 }
             }
         }
+
+    public void transfer(String senderACCNO, String receiverACCNO, Double money, String pin){
+        String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
+        String sql1 = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
+        Connection connection = null;
+        try {
+            connection = DBConnection.getConnection();
+            connection.setAutoCommit(false);
+            Double newBalance = getAccountById(senderACCNO).getBalance() - money;
+            try(
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ){
+                preparedStatement.setDouble(1,newBalance);
+                preparedStatement.setString(2,senderACCNO);
+                preparedStatement.setString(3,pin);
+                int rows = preparedStatement.executeUpdate();
+                if (rows == 0) {
+                    System.out.println("Invalid account number or PIN.");
+                    connection.rollback();
+                    return;
+                }
+            }
+            Transaction transaction = new Transaction(
+                    senderACCNO,
+                    Transaction.TransactionType.TRANSFER_OUT,
+                    money,
+                    newBalance
+            );
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.doTransaction(connection,transaction);
+
+
+            Double newBalance1 = getAccountById(receiverACCNO).getBalance() + money;
+            try(
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql1);
+            ){
+                preparedStatement.setDouble(1,newBalance1);
+                preparedStatement.setString(2,receiverACCNO);
+                int rows = preparedStatement.executeUpdate();
+                if (rows == 0) {
+                    System.out.println("Invalid account number or PIN.");
+                    connection.rollback();
+                    return;
+                }
+            }
+            Transaction transaction1 = new Transaction(
+                    receiverACCNO,
+                    Transaction.TransactionType.TRANSFER_IN,
+                    money,
+                    newBalance1
+            );
+            TransactionDAO transactionDAO1 = new TransactionDAO();
+            transactionDAO1.doTransaction(connection, transaction1);
+            connection.commit();
+            System.out.println("Transfer Successful.");
+            System.out.println("Updated Balance : ₹"+newBalance1);
+        } catch (SQLException e) {
+            if(connection!=null){
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+        finally {
+            if(connection!=null){
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

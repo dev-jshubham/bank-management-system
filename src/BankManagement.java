@@ -299,7 +299,22 @@ public class BankManagement {
     }
 
     private void transferMoney() {
-        System.out.println("Currently working in this feature.");
+        System.out.println("Enter Sender Account Number:");
+        String senderACCNO = checkAccountNumber();
+        System.out.println("Enter Receiver Account Number:");
+        String receiverACCNO = checkAccountNumber();
+        Account fetchedAccount = accountDAO.getAccountById(senderACCNO);
+        if (fetchedAccount != null) {
+            System.out.println(fetchedAccount);
+        } else {
+            System.out.println("Account not found.");
+            return;
+        }
+        System.out.println("Enter amount:");
+        Double money = checkMoney();
+        System.out.println("Enter PIN:");
+        String pin = checkPinString();
+        accountDAO.transfer(senderACCNO, receiverACCNO,money,pin);
     }
 
     private void transactionHistory() {
