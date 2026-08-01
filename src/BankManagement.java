@@ -136,7 +136,11 @@ public class BankManagement {
     public double checkMoney() {
         while (true) {
             try {
-                return Double.parseDouble(sc.nextLine());
+                double amount = Double.parseDouble(sc.nextLine());
+                if (amount > 0) {
+                    return amount;
+                }
+                System.out.println("Amount must be greater than 0.");
             } catch (NumberFormatException e) {
                 System.out.println("Invalid amount! Please enter a valid number.");
             }
@@ -266,7 +270,7 @@ public class BankManagement {
 
     private void depositMoney() {
         System.out.println("Enter your account number (e.g. ACC0000) :");
-        String accountNumber = checkString();
+        String accountNumber = checkAccountNumber();
         Account fetchedAccount = accountDAO.getAccountById(accountNumber);
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
@@ -306,6 +310,10 @@ public class BankManagement {
         Account fetchedAccount = accountDAO.getAccountById(senderACCNO);
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
+        }
+        else{
+            System.out.println("Sender account not found.");
+            return;
         }
         System.out.println("Enter amount:");
         Double money = checkMoney();

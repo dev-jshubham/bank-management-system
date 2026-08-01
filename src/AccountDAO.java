@@ -62,8 +62,13 @@ public class AccountDAO {
             try {
                 connection = DBConnection.getConnection();
                 connection.setAutoCommit(false);
-
-                Double newBalance = money + getAccountById(accountNumber).getBalance();
+                Account account = getAccountById(accountNumber);
+                if(account==null){
+                    System.out.println("Account not found.");
+                    connection.rollback();
+                    return;
+                }
+                Double newBalance = money + account.getBalance();
                 try(
                         PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ){
@@ -116,6 +121,11 @@ public class AccountDAO {
                 connection = DBConnection.getConnection();
                 connection.setAutoCommit(false);
                 Account account = getAccountById(accountNumber);
+                if(account==null){
+                    System.out.println("Account not found.");
+                    connection.rollback();
+                    return;
+                }
                 if(account.getBalance()<money){
                     System.out.println("Insufficient Amount.");
                     connection.rollback();
@@ -246,7 +256,7 @@ public class AccountDAO {
             transactionDAO.doTransaction(connection, transaction1);
             connection.commit();
             System.out.println("Transfer Successful.");
-            System.out.println("Updated Balance : ₹"+newBalance1);
+            System.out.println("Updated Balance : ₹"+newBalance);
         } catch (SQLException e) {
             if(connection!=null){
                 try {

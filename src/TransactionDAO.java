@@ -1,11 +1,10 @@
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionDAO {
 
-    public void doTransaction(Connection connection, Transaction transaction){
+    public void doTransaction(Connection connection, Transaction transaction) throws  SQLException{
         String sql = "INSERT INTO transaction (accountNumber, transactionType, amount, balanceAfter, transactionDate) VALUES(?,?,?,?,?);";
         try (
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -18,19 +17,20 @@ public class TransactionDAO {
             preparedStatement.setTimestamp(5, Timestamp.valueOf(transaction.getTransactionDate()));
             int rows = preparedStatement.executeUpdate();
             if(rows>0){
-                ResultSet generatedKey = preparedStatement.getGeneratedKeys();
-                if(generatedKey.next()){
-                    int transactionId = generatedKey.getInt(1);
-                    transaction.setTransactionId(transactionId);
-                    System.out.println("Transaction done successfully.");
+                try(
+                        ResultSet generatedKey = preparedStatement.getGeneratedKeys();
+                ) {
+                    if (generatedKey.next()) {
+                        int transactionId = generatedKey.getInt(1);
+                        transaction.setTransactionId(transactionId);
+                        System.out.println("Transaction done successfully.");
+                    }
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
-    public List<Transaction> transactionHistory(String accountNumber){
+    public List<Transaction> transactionHistory(String accountNumber)  throws  SQLException{
         List<Transaction> transactionList = new ArrayList<>();
         String sql = "SELECT * FROM transaction WHERE accountNumber = ? ORDER BY transactionDate DESC;";
         try (
@@ -55,8 +55,6 @@ public class TransactionDAO {
                 }
                 return transactionList;
             }
-        } catch (SQLException e) {
-            throw new RuntimeException();
         }
     }
 
