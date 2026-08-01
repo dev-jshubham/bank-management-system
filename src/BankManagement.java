@@ -306,9 +306,6 @@ public class BankManagement {
         Account fetchedAccount = accountDAO.getAccountById(senderACCNO);
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
-        } else {
-            System.out.println("Account not found.");
-            return;
         }
         System.out.println("Enter amount:");
         Double money = checkMoney();
