@@ -4,10 +4,11 @@
 
 ### A Console-Based Banking Application built with Java, JDBC & MySQL
 
-[![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Status](https://img.shields.io/badge/Status-In%20Development-yellow?style=for-the-badge)](#-roadmap--current-status)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-17-maroon?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-darkblue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Status](https://img.shields.io/badge/Status-In%20Development-indigo?style=for-the-badge)](#-roadmap--current-status)
+[![Status](https://img.shields.io/badge/STAGE-4-magenta?style=for-the-badge)](#-roadmap--current-status)
+[![License](https://img.shields.io/badge/License-MIT-darkgreen?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -80,6 +81,7 @@ All customer, account, and transaction data is persisted in a relational MySQL d
 <img src="https://img.shields.io/badge/IntelliJ_IDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white" alt="IntelliJ IDEA">
 
 </p>
+
 ---
 
 ## 🏗 Architecture
@@ -137,8 +139,6 @@ BankManagementSystem/
 | Registration Date | Customer registration timestamp |
 | Active Status | Indicates whether the customer account is active |
 
----
-
 ### Account
 
 | Column | Description |
@@ -150,8 +150,6 @@ BankManagementSystem/
 | Status | Active / Blocked / Closed |
 | Opened Date | Account opening timestamp |
 | PIN | Transaction PIN *(plaintext currently — hashing planned)* |
-
----
 
 ### Transaction
 

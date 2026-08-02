@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -325,7 +326,12 @@ public class BankManagement {
     private void transactionHistory() {
         System.out.println("Enter Account Number.");
         String accountNumber = checkAccountNumber();
-        List<Transaction> transactionList = transactionDAO.transactionHistory(accountNumber);
+        List<Transaction> transactionList = null;
+        try {
+            transactionList = transactionDAO.transactionHistory(accountNumber);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         if (transactionList.isEmpty()) {
             System.out.println("No transaction history found.");
         } else {
