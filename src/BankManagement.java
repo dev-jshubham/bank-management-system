@@ -1,6 +1,7 @@
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class BankManagement {
@@ -169,8 +170,8 @@ public class BankManagement {
             System.out.println("6. Withdraw Money");
             System.out.println("7. Transfer Money");
             System.out.println("8. View Transaction History");
-            System.out.println("9. Exit");
-
+            System.out.println("9. Change PIN");
+            System.out.println("10. Exit");
             System.out.print("\nEnter your choice: ");
             int select = checkInt();
             switch (select) {
@@ -182,7 +183,8 @@ public class BankManagement {
                 case 6 -> withdrawMoney();
                 case 7 -> transferMoney();
                 case 8 -> transactionHistory();
-                case 9 -> {
+                case 9 -> changePin();
+                case 10 -> {
                     System.out.println("Thank you for coming.....");
                     return;
                 }
@@ -339,6 +341,20 @@ public class BankManagement {
                 System.out.println(transaction);
             }
         }
+    }
+
+    private void changePin() {
+        System.out.println("Enter account Number: ");
+        String accountNumber = checkAccountNumber();
+        System.out.println("Enter current pin: ");
+        String currentPin = checkPinString();
+        System.out.println("Enter new pin: ");
+        String pin = checkPinString();
+        if (Objects.equals(currentPin, pin)) {
+                System.out.println("You entered the same PIN.");
+                return;
+            }
+        accountDAO.changePin(accountNumber,pin,currentPin);
     }
 
 }
