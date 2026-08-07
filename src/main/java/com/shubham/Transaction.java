@@ -1,3 +1,5 @@
+package com.shubham;
+
 import java.time.LocalDateTime;
 
 public class Transaction {
@@ -69,10 +71,10 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction Details\n" +
+        return "com.shubham.Transaction Details\n" +
                 "-------------------------\n" +
-                "Transaction ID : " + transactionId + "\n" +
-                "Account Number : " + accountNumber + "\n" +
+                "com.shubham.Transaction ID : " + transactionId + "\n" +
+                "com.shubham.Account Number : " + accountNumber + "\n" +
                 "Type           : " + transactionType + "\n" +
                 "Amount         : ₹" + amount + "\n" +
                 "Balance After  : ₹" + balanceAfter + "\n" +

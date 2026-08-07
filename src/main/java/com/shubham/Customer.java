@@ -1,3 +1,5 @@
+package com.shubham;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -123,9 +125,9 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer Details\n" +
+        return "com.shubham.Customer Details\n" +
                 "-------------------------\n" +
-                "Customer ID    : " + customerId + "\n" +
+                "com.shubham.Customer ID    : " + customerId + "\n" +
                 "Name           : " + name + "\n" +
                 "DOB            : " + dob + "\n" +
                 "Gender         : " + gender + "\n" +

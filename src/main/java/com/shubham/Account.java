@@ -1,3 +1,5 @@
+package com.shubham;
+
 import java.time.LocalDateTime;
 
 public class Account {
@@ -81,11 +83,11 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account Details\n" +
+        return "com.shubham.Account Details\n" +
                 "-------------------------\n" +
-                "Account Number : " + accountNumber + "\n" +
-                "Customer ID    : " + customerId + "\n" +
-                "Account Type   : " + accountType + "\n" +
+                "com.shubham.Account Number : " + accountNumber + "\n" +
+                "com.shubham.Customer ID    : " + customerId + "\n" +
+                "com.shubham.Account Type   : " + accountType + "\n" +
                 "Balance        : ₹" + balance + "\n" +
                 "Status         : " + status + "\n" +
                 "Opened Date    : " + openedDate + "\n";

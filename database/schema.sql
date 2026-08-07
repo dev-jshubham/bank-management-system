@@ -12,7 +12,7 @@
 CREATE DATABASE IF NOT EXISTS project2_bms;
 USE project2_bms;
 -- =========================================================
--- Customer Table
+-- com.shubham.Customer Table
 -- Stores customer personal and login information.
 -- =========================================================
 CREATE TABLE IF NOT EXISTS customer(
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS customer(
                              active BOOLEAN not null
 );
 -- =========================================================
--- Account Table
+-- com.shubham.Account Table
 -- Stores bank account details for each customer.
 -- =========================================================
 CREATE TABLE IF NOT EXISTS account(

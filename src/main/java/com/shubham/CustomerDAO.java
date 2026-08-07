@@ -1,3 +1,5 @@
+package com.shubham;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +29,7 @@ public class CustomerDAO {
                 if(generatedKey.next()){
                     int newId = generatedKey.getInt(1);
                     customer.setCustomerId(newId);
-                    System.out.println("Customer added with ID: " + newId);
+                    System.out.println("com.shubham.Customer added with ID: " + newId);
                 }
             }
         } catch (SQLException e) {

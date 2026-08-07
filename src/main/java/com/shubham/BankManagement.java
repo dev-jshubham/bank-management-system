@@ -1,8 +1,8 @@
+package com.shubham;
+
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class BankManagement {
     private final InputValidator input = new InputValidator();
@@ -13,14 +13,14 @@ public class BankManagement {
     public void start() {
         while (true) {
             System.out.println("\n========== BANK MANAGEMENT SYSTEM ==========");
-            System.out.println("1. Register Customer");
-            System.out.println("2. View Customer");
-            System.out.println("3. Open Account");
-            System.out.println("4. View Account");
+            System.out.println("1. Register com.shubham.Customer");
+            System.out.println("2. View com.shubham.Customer");
+            System.out.println("3. Open com.shubham.Account");
+            System.out.println("4. View com.shubham.Account");
             System.out.println("5. Deposit Money");
             System.out.println("6. Withdraw Money");
             System.out.println("7. Transfer Money");
-            System.out.println("8. View Transaction History");
+            System.out.println("8. View com.shubham.Transaction History");
             System.out.println("9. Change PIN");
             System.out.println("10. Exit");
             System.out.print("\nEnter your choice: ");
@@ -73,20 +73,20 @@ public class BankManagement {
         if (fetchedCustomer != null) {
             System.out.println(fetchedCustomer);
         } else {
-            System.out.println("Customer not found.");
+            System.out.println("com.shubham.Customer not found.");
         }
     }
 
     private void openAccount() {
-        System.out.println("Enter Customer ID:");
+        System.out.println("Enter com.shubham.Customer ID:");
         Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
         if (fetchedCustomer == null) {
-            System.out.println("Customer not found.");
+            System.out.println("com.shubham.Customer not found.");
             return;
         }
         System.out.println("Enter your account number (e.g. ACC0000) :");
         String accountNumber = input.checkAccountNumber();
-        System.out.println("Select Account Type:");
+        System.out.println("Select com.shubham.Account Type:");
         System.out.println("1. Savings");
         System.out.println("2. Current");
         int choice =input. checkInt();
@@ -118,7 +118,7 @@ public class BankManagement {
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("com.shubham.Account not found.");
         }
     }
 
@@ -129,7 +129,7 @@ public class BankManagement {
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("com.shubham.Account not found.");
             return;
         }
         System.out.println("Enter amount:");
@@ -146,7 +146,7 @@ public class BankManagement {
         if (fetchedAccount != null) {
             System.out.println(fetchedAccount);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("com.shubham.Account not found.");
             return;
         }
         System.out.println("Enter amount:");
@@ -157,9 +157,9 @@ public class BankManagement {
     }
 
     private void transferMoney() {
-        System.out.println("Enter Sender Account Number:");
+        System.out.println("Enter Sender com.shubham.Account Number:");
         String senderACCNO = input.checkAccountNumber();
-        System.out.println("Enter Receiver Account Number:");
+        System.out.println("Enter Receiver com.shubham.Account Number:");
         String receiverACCNO = input.checkAccountNumber();
         Account fetchedAccount = accountDAO.getAccountById(senderACCNO);
         if (fetchedAccount != null) {
@@ -177,7 +177,7 @@ public class BankManagement {
     }
 
     private void transactionHistory() {
-        System.out.println("Enter Account Number.");
+        System.out.println("Enter com.shubham.Account Number.");
         String accountNumber = input.checkAccountNumber();
         List<Transaction> transactionList = null;
         try {
