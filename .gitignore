@@ -5,7 +5,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
-src/DBConnection.java
+src/DBConnection.javagit ad
+src/main/resources/hibernate.cfg.xml
 
 ### Eclipse ###
 .apt_generated
