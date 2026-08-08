@@ -5,6 +5,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
+target/
 src/main/resources/hibernate.cfg.xml
 
 ### Eclipse ###
