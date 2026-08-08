@@ -1,7 +1,13 @@
 package com.shubham;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Account {
 
     public enum AccountType{
@@ -15,10 +21,13 @@ public class Account {
         CLOSED
     }
 
+    @Id
     private final String accountNumber;
     private final int customerId;
+    @Enumerated(EnumType.STRING)
     private final AccountType accountType;
     private double balance;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private final LocalDateTime openedDate;
     private String pin;

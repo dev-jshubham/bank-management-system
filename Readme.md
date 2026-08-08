@@ -49,11 +49,11 @@ All customer, account, and transaction data is persisted in a relational MySQL d
 
 - com.shubham.Customer registration with core details (name, DOB, contact, ID proof)
 - com.shubham.Account creation linked to a customer (Savings / Current)
-- Normalized relational schema — `com.shubham.Customer → com.shubham.Account → com.shubham.Transaction` with foreign keys
-- DAO layer for com.shubham.Customer, com.shubham.Account, and com.shubham.Transaction persistence
+- Normalized relational schema — `com.shubham.Customer → com.shubham.Account → com.shubham.bankTransaction` with foreign keys
+- DAO layer for com.shubham.Customer, com.shubham.Account, and com.shubham.bankTransaction persistence
 - View account details and balance
 - Deposit, withdrawal, and fund transfer logic (atomic — commit/rollback)
-- com.shubham.Transaction history / statement generation
+- com.shubham.bankTransaction history / statement generation
 
 ### 🔜 In Progress / Planned
 
@@ -111,7 +111,7 @@ BankManagementSystem/
 │   ├── com.shubham.CustomerDAO.java
 │   ├── DBConnection.java
 │   ├── com.shubham.Main.java
-│   ├── com.shubham.Transaction.java
+│   ├── com.shubham.bankTransaction.java
 │   └── com.shubham.TransactionDAO.java
 │
 ├── .gitignore
@@ -149,18 +149,18 @@ BankManagementSystem/
 | Balance | Current account balance |
 | Status | Active / Blocked / Closed |
 | Opened Date | com.shubham.Account opening timestamp |
-| PIN | com.shubham.Transaction PIN *(plaintext currently — hashing planned)* |
+| PIN | com.shubham.bankTransaction PIN *(plaintext currently — hashing planned)* |
 
-### com.shubham.Transaction
+### com.shubham.bankTransaction
 
 | Column | Description |
 |---------|-------------|
-| com.shubham.Transaction ID | Primary key, auto-generated |
+| com.shubham.bankTransaction ID | Primary key, auto-generated |
 | com.shubham.Account Number | Foreign key referencing **com.shubham.Account** |
-| com.shubham.Transaction Type | Deposit / Withdraw / Transfer In / Transfer Out |
-| Amount | com.shubham.Transaction amount |
+| com.shubham.bankTransaction Type | Deposit / Withdraw / Transfer In / Transfer Out |
+| Amount | com.shubham.bankTransaction amount |
 | Balance After | com.shubham.Account balance after the transaction |
-| com.shubham.Transaction Date | Timestamp of the transaction |
+| com.shubham.bankTransaction Date | Timestamp of the transaction |
 
 ---
 
@@ -254,7 +254,7 @@ Once launched, the application presents a menu-driven console interface:
 4. Withdraw Money
 5. Transfer Funds
 6. View com.shubham.Account Details
-7. View com.shubham.Transaction History
+7. View com.shubham.bankTransaction History
 8. Exit
 =====================================
 Enter your choice:
@@ -306,7 +306,7 @@ Through this project, the following practical skills were developed:
 
 | Stage | Description | Status |
 |---|---|---|
-| 1 | Model classes — com.shubham.Customer, com.shubham.Account, com.shubham.Transaction | ✅ Completed |
+| 1 | Model classes — com.shubham.Customer, com.shubham.Account, com.shubham.bankTransaction | ✅ Completed |
 | 2 | JDBC + MySQL integration (DAO layer) | ✅ Completed |
 | 3 | Core banking logic — deposit, withdraw, transfer with rollback | ✅ Completed |
 | 4 | Admin panel & reporting | 🔄 In Progress |

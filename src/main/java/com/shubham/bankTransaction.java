@@ -1,8 +1,11 @@
 package com.shubham;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
-public class Transaction {
+@Entity
+public class bankTransaction {
 
     public enum TransactionType{
         DEPOSIT,
@@ -10,19 +13,23 @@ public class Transaction {
         TRANSFER_IN,
         TRANSFER_OUT
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
     private final String accountNumber;
+    @Enumerated(EnumType.STRING)
     private final TransactionType transactionType;
     private final double amount;
     private final double balanceAfter;
     private final LocalDateTime transactionDate;
 
-    public Transaction(int transactionId,
-                       String accountNumber,
-                       TransactionType transactionType,
-                       double amount,
-                       double balanceAfter,
-                       LocalDateTime transactionDate) {
+    public bankTransaction(int transactionId,
+                           String accountNumber,
+                           TransactionType transactionType,
+                           double amount,
+                           double balanceAfter,
+                           LocalDateTime transactionDate) {
 
         this.transactionId = transactionId;
         this.accountNumber = accountNumber;
@@ -32,7 +39,7 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public Transaction(String accountNumber, TransactionType transactionType, double amount, double balanceAfter) {
+    public bankTransaction(String accountNumber, TransactionType transactionType, double amount, double balanceAfter) {
         this.transactionId = 0;
         this.accountNumber = accountNumber;
         this.transactionType = transactionType;
@@ -71,9 +78,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "com.shubham.Transaction Details\n" +
+        return "com.shubham.bankTransaction Details\n" +
                 "-------------------------\n" +
-                "com.shubham.Transaction ID : " + transactionId + "\n" +
+                "com.shubham.bankTransaction ID : " + transactionId + "\n" +
                 "com.shubham.Account Number : " + accountNumber + "\n" +
                 "Type           : " + transactionType + "\n" +
                 "Amount         : ₹" + amount + "\n" +

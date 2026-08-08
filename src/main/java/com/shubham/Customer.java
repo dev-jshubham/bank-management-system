@@ -1,15 +1,22 @@
 package com.shubham;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
 public class Customer {
     public enum Gender{
         MALE, FEMALE, OTHER
     }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
     private String name;
     private LocalDate dob;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String phoneNumber;
     private String email;
@@ -17,7 +24,7 @@ public class Customer {
     private String idProofType;
     private String idProofNumber;
     private String password;
-    private final LocalDateTime registrationDate;
+    private LocalDateTime registrationDate;
     private boolean active;
 
     public Customer() {
