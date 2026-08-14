@@ -27,7 +27,7 @@ public class BankManagement {
             int select = input.checkInt();
             switch (select) {
                 case 1 -> registerCustomer();
-//                case 2 -> viewCustomer();
+                case 2 -> viewCustomer();
 //                case 3 -> openAccount();
 //                case 4 -> viewAccount();
 //                case 5 -> depositMoney();
@@ -67,16 +67,16 @@ public class BankManagement {
         customerDAO.addCustomer(customer);
     }
 
-//    private void viewCustomer() {
-//        System.out.println("Enter the ID of customer:");
-//        Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
-//        if (fetchedCustomer != null) {
-//            System.out.println(fetchedCustomer);
-//        } else {
-//            System.out.println("com.shubham.Customer not found.");
-//        }
-//    }
-//
+    private void viewCustomer() {
+        System.out.println("Enter the ID of customer:");
+        Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
+        if (fetchedCustomer != null) {
+            System.out.println(fetchedCustomer);
+        } else {
+            System.out.println("com.shubham.Customer not found.");
+        }
+    }
+
 //    private void openAccount() {
 //        System.out.println("Enter com.shubham.Customer ID:");
 //        Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
