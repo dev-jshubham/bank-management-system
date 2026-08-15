@@ -1,63 +1,40 @@
-//package com.shubham;
-//
-//import java.sql.*;
-//import java.util.Objects;
-//
-//public class AccountDAO {
-//    private final TransactionDAO transactionDAO = new TransactionDAO();
-//    public void createAccount(Account account){
-//        String sql = "INSERT INTO account(accountNumber, accountType, balance, status, openedDate, pin,customerId) VALUES(?,?,?,?,?,?,?);";
-//        try (
-//            Connection connection = DBConnection.getConnection();
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            )
-//            {
-//                preparedStatement.setString(1,account.getAccountNumber());
-//                preparedStatement.setString(2,account.getAccountType().name());
-//                preparedStatement.setDouble(3,account.getBalance());
-//                preparedStatement.setString(4,account.getStatus().name());
-//                preparedStatement.setTimestamp(5, Timestamp.valueOf(account.getOpenedDate()));
-//                preparedStatement.setString(6,account.getPin());
-//                preparedStatement.setInt(7,account.getCustomerId());
-//                int rows = preparedStatement.executeUpdate();
-//                if(rows>0){
-//                    System.out.println("com.shubham.Account added of customer id = " +account.getCustomerId());
-//                }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//        public Account getAccountById(String accountNumber){
-//            String sql = "SELECT * FROM account WHERE accountNumber = ?;";
-//            try (
-//                    Connection connection = DBConnection.getConnection();
-//                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            )
-//            {
-//             preparedStatement.setString(1, accountNumber);
-//             try(
-//                ResultSet resultSet = preparedStatement.executeQuery();
-//             )
-//             {
-//                 if(resultSet.next()) {
-//                    Account account1 = new Account(
-//                            resultSet.getString("accountNumber"),
-//                            resultSet.getInt("customerId"),
-//                            Account.AccountType.valueOf(resultSet.getString("accountType").toUpperCase()),
-//                            resultSet.getDouble("balance"),
-//                            resultSet.getTimestamp("openedDate").toLocalDateTime(),
-//                            Account.Status.valueOf(resultSet.getString("status").toUpperCase())
-//                    );
-//                     return account1;
-//                 }
-//             }
-//             return null;
-//            } catch (SQLException e) {
-//                throw new RuntimeException();
-//            }
-//        }
-//
+package com.shubham;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class AccountDAO {
+
+    private final SessionFactory sessionFactory;
+
+    public AccountDAO() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        configuration.addAnnotatedClass(Account.class);
+        sessionFactory = configuration.buildSessionFactory();
+    }
+
+    public void createAccount(Account account) {
+        try (
+                Session session = sessionFactory.openSession();
+        ) {
+            Transaction transaction = session.beginTransaction();
+            session.persist(account);
+            transaction.commit();
+        }
+    }
+
+    public Account getAccountById(String accountNumber) {
+        try (
+                Session session = sessionFactory.openSession();
+        ) {
+            Account account = session.find(com.shubham.Account.class, accountNumber);
+            return account;
+        }
+    }
+
 //        public void deposit(String accountNumber, Double money, String pin) {
 //            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
 //            Connection connection = null;
@@ -307,4 +284,4 @@
 //        }
 //    }
 //
-//}
+}

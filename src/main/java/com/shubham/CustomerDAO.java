@@ -13,7 +13,6 @@ public class CustomerDAO {
         configuration.configure();
         configuration.addAnnotatedClass(Customer.class);
         sessionFactory = configuration.buildSessionFactory();
-
     }
 
     public void addCustomer(Customer customer) {

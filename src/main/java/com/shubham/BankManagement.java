@@ -7,7 +7,7 @@ import java.util.Objects;
 public class BankManagement {
     private final InputValidator input = new InputValidator();
     private final CustomerDAO customerDAO = new CustomerDAO();
-//    private final AccountDAO accountDAO = new AccountDAO();
+    private final AccountDAO accountDAO = new AccountDAO();
 //    private final TransactionDAO transactionDAO = new TransactionDAO();
 
     public void start() {
@@ -28,8 +28,8 @@ public class BankManagement {
             switch (select) {
                 case 1 -> registerCustomer();
                 case 2 -> viewCustomer();
-//                case 3 -> openAccount();
-//                case 4 -> viewAccount();
+                case 3 -> openAccount();
+                case 4 -> viewAccount();
 //                case 5 -> depositMoney();
 //                case 6 -> withdrawMoney();
 //                case 7 -> transferMoney();
@@ -77,51 +77,51 @@ public class BankManagement {
         }
     }
 
-//    private void openAccount() {
-//        System.out.println("Enter com.shubham.Customer ID:");
-//        Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
-//        if (fetchedCustomer == null) {
-//            System.out.println("com.shubham.Customer not found.");
-//            return;
-//        }
-//        System.out.println("Enter your account number (e.g. ACC0000) :");
-//        String accountNumber = input.checkAccountNumber();
-//        System.out.println("Select com.shubham.Account Type:");
-//        System.out.println("1. Savings");
-//        System.out.println("2. Current");
-//        int choice =input. checkInt();
-//        Account.AccountType type;
-//        switch (choice) {
-//            case 1 -> type = Account.AccountType.SAVINGS;
-//            case 2 -> type = Account.AccountType.CURRENT;
-//            default -> {
-//                System.out.println("Invalid account type.");
-//                return;
-//            }
-//        }
-//        System.out.print("Enter Initial Deposit (minimum : ₹5000) : ");
-//        double balance = input.checkInitialAmount();
-//        Account account = new Account(
-//                accountNumber,
-//                fetchedCustomer.getCustomerId(),
-//                type,
-//                balance
-//        );
-//        System.out.println("Enter PIN:");
-//        account.setPin(input.checkPinString());
-//        accountDAO.createAccount(account);
-//    }
+    private void openAccount() {
+        System.out.println("Enter com.shubham.Customer ID:");
+        Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
+        if (fetchedCustomer == null) {
+            System.out.println("Customer not found.");
+            return;
+        }
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        String accountNumber = input.checkAccountNumber();
+        System.out.println("Select Account Type:");
+        System.out.println("1. Savings");
+        System.out.println("2. Current");
+        int choice =input. checkInt();
+        Account.AccountType type;
+        switch (choice) {
+            case 1 -> type = Account.AccountType.SAVINGS;
+            case 2 -> type = Account.AccountType.CURRENT;
+            default -> {
+                System.out.println("Invalid account type.");
+                return;
+            }
+        }
+        System.out.print("Enter Initial Deposit (minimum : ₹5000) : ");
+        double balance = input.checkInitialAmount();
+        Account account = new Account(
+                accountNumber,
+                fetchedCustomer.getCustomerId(),
+                type,
+                balance
+        );
+        System.out.println("Enter PIN:");
+        account.setPin(input.checkPinString());
+        accountDAO.createAccount(account);
+    }
 
-//    private void viewAccount() {
-//        System.out.println("Enter your account number (e.g. ACC0000) :");
-//        Account fetchedAccount = accountDAO.getAccountById(input.checkString());
-//        if (fetchedAccount != null) {
-//            System.out.println(fetchedAccount);
-//        } else {
-//            System.out.println("com.shubham.Account not found.");
-//        }
-//    }
-//
+    private void viewAccount() {
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        Account fetchedAccount = accountDAO.getAccountById(input.checkString());
+        if (fetchedAccount != null) {
+            System.out.println(fetchedAccount);
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
 //    private void depositMoney() {
 //        System.out.println("Enter your account number (e.g. ACC0000) :");
 //        String accountNumber =input.checkAccountNumber();
@@ -138,7 +138,7 @@ public class BankManagement {
 //        String pin = input.checkPinString();
 //        accountDAO.deposit(accountNumber, money, pin);
 //    }
-//
+
 //    private void withdrawMoney() {
 //        System.out.println("Enter your account number (e.g. ACC0000) :");
 //        String accountNumber = input.checkString();
