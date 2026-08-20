@@ -34,7 +34,7 @@ public class BankManagement {
                 case 6 -> withdrawMoney();
                 case 7 -> transferMoney();
                 case 8 -> transactionHistory();
-//                case 9 -> changePin();
+                case 9 -> changePin();
                 case 10 -> {
                     System.out.println("Thank you for coming.....");
                     return;
@@ -168,19 +168,19 @@ public class BankManagement {
         }
     }
 
-//    private void changePin() {
-//        System.out.println("Enter account Number: ");
-//        String accountNumber = input.checkAccountNumber();
-//        System.out.println("Enter current pin: ");
-//        String currentPin = input.checkPinString();
-//        System.out.println("Enter new pin: ");
-//        String pin = input.checkPinString();
-//        if (Objects.equals(currentPin, pin)) {
-//                System.out.println("You entered the same PIN.");
-//                return;
-//            }
-//        accountDAO.changePin(accountNumber,pin,currentPin);
-//    }
+    private void changePin() {
+        System.out.println("Enter account Number: ");
+        String accountNumber = input.checkAccountNumber();
+        System.out.println("Enter current pin: ");
+        String currentPin = input.checkPinString();
+        System.out.println("Enter new pin: ");
+        String pin = input.checkPinString();
+        if (Objects.equals(currentPin, pin)) {
+                System.out.println("You entered the same PIN.");
+                return;
+            }
+        accountDAO.changePin(accountNumber,pin,currentPin);
+    }
 
 }
 

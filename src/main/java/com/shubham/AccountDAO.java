@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class AccountDAO {
 
@@ -172,30 +173,16 @@ public class AccountDAO {
         }
     }
 
-//    public void changePin(String accountNumber ,String pin, String currentPin){
-//        String sql = "UPDATE account SET pin = ? WHERE accountNumber = ? AND pin = ?";
-//        try (
-//                Connection connection = DBConnection.getConnection();
-//                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//        )
-//        {
-//            Account account = getAccountById(accountNumber);
-//            if(account==null){
-//                System.out.println("com.shubham.Account not found.");
-//                return;
-//            }
-//            preparedStatement.setString(1, pin);
-//            preparedStatement.setString(2, accountNumber);
-//            preparedStatement.setString(3, currentPin);
-//            int rows = preparedStatement.executeUpdate();
-//            if(rows > 0){
-//                System.out.println("PIN updated successfully.");
-//            }else{
-//                System.out.println("Invalid current PIN.");
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException();
-//        }
-//    }
+    public void changePin(String accountNumber ,String pin, String currentPin){
+        try (
+                Session session = sessionFactory.openSession();
+        ) {
+            Transaction transaction = session.beginTransaction();
+            Account account = session.find(Account.class,accountNumber);
+            account.setPin(pin);
+            session.merge(account);
+            transaction.commit();
+        }
+    }
 
 }
