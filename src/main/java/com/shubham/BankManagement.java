@@ -31,7 +31,7 @@ public class BankManagement {
                 case 3 -> openAccount();
                 case 4 -> viewAccount();
                 case 5 -> depositMoney();
-//                case 6 -> withdrawMoney();
+                case 6 -> withdrawMoney();
 //                case 7 -> transferMoney();
                 case 8 -> transactionHistory();
 //                case 9 -> changePin();
@@ -132,23 +132,23 @@ public class BankManagement {
         accountDAO.deposit(accountNumber, money, pin);
     }
 
-//    private void withdrawMoney() {
-//        System.out.println("Enter your account number (e.g. ACC0000) :");
-//        String accountNumber = input.checkString();
-//        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
-//        if (fetchedAccount != null) {
-//            System.out.println(fetchedAccount);
-//        } else {
-//            System.out.println("com.shubham.Account not found.");
-//            return;
-//        }
-//        System.out.println("Enter amount:");
-//        Double money = input.checkMoney();
-//        System.out.println("Enter PIN:");
-//        String pin =input.checkPinString();
-//        accountDAO.withdraw(accountNumber, money,pin);
-//    }
-//
+    private void withdrawMoney() {
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        String accountNumber = input.checkString();
+        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
+        if (fetchedAccount != null) {
+            System.out.println(fetchedAccount);
+        } else {
+            System.out.println("com.shubham.Account not found.");
+            return;
+        }
+        System.out.println("Enter amount:");
+        Double money = input.checkMoney();
+        System.out.println("Enter PIN:");
+        String pin =input.checkPinString();
+        accountDAO.withdraw(accountNumber, money,pin);
+    }
+
 //    private void transferMoney() {
 //        System.out.println("Enter Sender com.shubham.Account Number:");
 //        String senderACCNO = input.checkAccountNumber();

@@ -76,69 +76,44 @@ public class AccountDAO {
             }
         }
 
-//        public void withdraw(String accountNumber, Double money, String pin){
-//            String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
-//            Connection connection = null;
-//            try {
-//                connection = DBConnection.getConnection();
-//                connection.setAutoCommit(false);
-//                Account account = getAccountById(accountNumber);
-//                if(account==null){
-//                    System.out.println("com.shubham.Account not found.");
-//                    connection.rollback();
-//                    return;
-//                }
-//                if(account.getBalance()<money){
-//                    System.out.println("Insufficient Amount.");
-//                    connection.rollback();
-//                    return;
-//                }
-//                Double newBalance = account.getBalance() - money;
-//                try(
-//                        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//                        ){
-//                    preparedStatement.setDouble(1,newBalance);
-//                    preparedStatement.setString(2,accountNumber);
-//                    preparedStatement.setString(3,pin);
-//                    int rows = preparedStatement.executeUpdate();
-//                    if (rows == 0) {
-//                        System.out.println("Invalid account number or PIN.");
-//                        connection.rollback();
-//                        return;
-//                    }
-//                }
-//                bankTransaction transaction = new bankTransaction(
-//                        accountNumber,
-//                        bankTransaction.TransactionType.WITHDRAW,
-//                        money,
-//                        newBalance
-//                );
-//                transactionDAO.doTransaction(connection,transaction);
-//                connection.commit();
-//                System.out.println("Withdrawal Successful.");
-//                System.out.println("Updated Balance : ₹"+newBalance);
-//            } catch (SQLException e) {
-//                if(connection!=null){
-//                    try {
-//                        connection.rollback();
-//                    } catch (SQLException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//                e.printStackTrace();
-//            }
-//            finally {
-//                if(connection!=null){
-//                    try {
-//                        connection.setAutoCommit(true);
-//                        connection.close();
-//                    } catch (SQLException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }
-//
+        public void withdraw(String accountNumber, Double money, String pin){
+        try(
+                Session session = sessionFactory.openSession();
+        ) {
+                Transaction transaction = session.beginTransaction();
+            try {
+                Account account = session.find(Account.class, accountNumber);
+                if (getAccountById(accountNumber) == null) {
+                    System.out.println("Account not found.");
+                    transaction.rollback();
+                    return;
+                }
+                if (!account.getPin().equals(pin)) {
+                    System.out.println("Invalid PIN.");
+                    transaction.rollback();
+                    return;
+                }
+                Double newBalance = account.getBalance()-money;
+                account.setBalance(newBalance);
+                bankTransaction bankTxn = new bankTransaction(
+                        accountNumber,
+                        bankTransaction.TransactionType.WITHDRAW,
+                        money,
+                        newBalance
+                );
+                transactionDAO.doTransaction(bankTxn, session);
+                session.merge(account);
+                transaction.commit();
+                System.out.println("Withdraw Successful.");
+                System.out.println("Updated Balance : ₹" + newBalance);
+            }
+            catch (Exception e) {
+            transaction.rollback();
+            e.printStackTrace();
+        }
+        }
+        }
+
 //    public void transfer(String senderACCNO, String receiverACCNO, Double money, String pin){
 //        String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
 //        String sql1 = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
