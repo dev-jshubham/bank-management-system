@@ -4,6 +4,6 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/your_database</property>
         <property name="hibernate.connection.username">your_username</property>
         <property name="hibernate.connection.password">your_password</property>
-        <property name="hibernate.hbm2ddl.auto">add</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
     </session-factory>
 </hibernate-configuration>

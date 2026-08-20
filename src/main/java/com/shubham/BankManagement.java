@@ -8,7 +8,7 @@ public class BankManagement {
     private final InputValidator input = new InputValidator();
     private final CustomerDAO customerDAO = new CustomerDAO();
     private final AccountDAO accountDAO = new AccountDAO();
-//    private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final TransactionDAO transactionDAO = new TransactionDAO();
 
     public void start() {
         while (true) {
@@ -30,10 +30,10 @@ public class BankManagement {
                 case 2 -> viewCustomer();
                 case 3 -> openAccount();
                 case 4 -> viewAccount();
-//                case 5 -> depositMoney();
+                case 5 -> depositMoney();
 //                case 6 -> withdrawMoney();
 //                case 7 -> transferMoney();
-//                case 8 -> transactionHistory();
+                case 8 -> transactionHistory();
 //                case 9 -> changePin();
                 case 10 -> {
                     System.out.println("Thank you for coming.....");
@@ -122,22 +122,15 @@ public class BankManagement {
         }
     }
 
-//    private void depositMoney() {
-//        System.out.println("Enter your account number (e.g. ACC0000) :");
-//        String accountNumber =input.checkAccountNumber();
-//        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
-//        if (fetchedAccount != null) {
-//            System.out.println(fetchedAccount);
-//        } else {
-//            System.out.println("com.shubham.Account not found.");
-//            return;
-//        }
-//        System.out.println("Enter amount:");
-//        Double money = input.checkMoney();
-//        System.out.println("Enter PIN:");
-//        String pin = input.checkPinString();
-//        accountDAO.deposit(accountNumber, money, pin);
-//    }
+    private void depositMoney() {
+        System.out.println("Enter your account number (e.g. ACC0000) :");
+        String accountNumber =input.checkAccountNumber();
+        System.out.println("Enter amount:");
+        Double money = input.checkMoney();
+        System.out.println("Enter PIN:");
+        String pin = input.checkPinString();
+        accountDAO.deposit(accountNumber, money, pin);
+    }
 
 //    private void withdrawMoney() {
 //        System.out.println("Enter your account number (e.g. ACC0000) :");
@@ -175,25 +168,21 @@ public class BankManagement {
 //        String pin = input.checkPinString();
 //        accountDAO.transfer(senderACCNO, receiverACCNO,money,pin);
 //    }
-//
-//    private void transactionHistory() {
-//        System.out.println("Enter com.shubham.Account Number.");
-//        String accountNumber = input.checkAccountNumber();
-//        List<bankTransaction> transactionList = null;
-//        try {
-//            transactionList = transactionDAO.transactionHistory(accountNumber);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        if (transactionList.isEmpty()) {
-//            System.out.println("No transaction history found.");
-//        } else {
-//            for (bankTransaction transaction : transactionList) {
-//                System.out.println(transaction);
-//            }
-//        }
-//    }
-//
+
+    private void transactionHistory() {
+        System.out.println("Enter Account Number.");
+        String accountNumber = input.checkAccountNumber();
+        List<bankTransaction> transactionList = null;
+            transactionList = transactionDAO.transactionHistory(accountNumber);
+        if (transactionList.isEmpty()) {
+            System.out.println("No transaction history found.");
+        } else {
+            for (bankTransaction transaction : transactionList) {
+                System.out.println(transaction);
+            }
+        }
+    }
+
 //    private void changePin() {
 //        System.out.println("Enter account Number: ");
 //        String accountNumber = input.checkAccountNumber();

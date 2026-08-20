@@ -17,30 +17,18 @@ public class bankTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int transactionId;
-    private final String accountNumber;
+    private String accountNumber;
     @Enumerated(EnumType.STRING)
-    private final TransactionType transactionType;
-    private final double amount;
-    private final double balanceAfter;
-    private final LocalDateTime transactionDate;
+    private TransactionType transactionType;
+    private double amount;
+    private double balanceAfter;
+    private LocalDateTime transactionDate;
 
-    public bankTransaction(int transactionId,
-                           String accountNumber,
-                           TransactionType transactionType,
-                           double amount,
-                           double balanceAfter,
-                           LocalDateTime transactionDate) {
+    public bankTransaction(){
 
-        this.transactionId = transactionId;
-        this.accountNumber = accountNumber;
-        this.transactionType = transactionType;
-        this.amount = amount;
-        this.balanceAfter = balanceAfter;
-        this.transactionDate = transactionDate;
     }
 
     public bankTransaction(String accountNumber, TransactionType transactionType, double amount, double balanceAfter) {
-        this.transactionId = 0;
         this.accountNumber = accountNumber;
         this.transactionType = transactionType;
         this.amount = amount;
@@ -78,10 +66,10 @@ public class bankTransaction {
 
     @Override
     public String toString() {
-        return "com.shubham.bankTransaction Details\n" +
+        return "Transaction Details\n" +
                 "-------------------------\n" +
-                "com.shubham.bankTransaction ID : " + transactionId + "\n" +
-                "com.shubham.Account Number : " + accountNumber + "\n" +
+                "Transaction ID : " + transactionId + "\n" +
+                "Account Number : " + accountNumber + "\n" +
                 "Type           : " + transactionType + "\n" +
                 "Amount         : ₹" + amount + "\n" +
                 "Balance After  : ₹" + balanceAfter + "\n" +
