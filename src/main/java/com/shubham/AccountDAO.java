@@ -114,108 +114,64 @@ public class AccountDAO {
         }
         }
 
-//    public void transfer(String senderACCNO, String receiverACCNO, Double money, String pin){
-//        String sql = "UPDATE account SET balance = ? WHERE accountNumber = ? AND pin = ?;";
-//        String sql1 = "UPDATE account SET balance = ? WHERE accountNumber = ?;";
-//        Connection connection = null;
-//        try {
-//            connection = DBConnection.getConnection();
-//            connection.setAutoCommit(false);
-//
-//            if(Objects.equals(senderACCNO, receiverACCNO)){
-//                System.out.println("Invalid transfer.");
-//                connection.rollback();
-//                return;
-//            }
-//
-//            Account receiver = getAccountById(receiverACCNO);
-//            if(receiver==null){
-//                System.out.println("com.shubham.Account not found.");
-//                connection.rollback();
-//                return;
-//            }
-//
-//            Account sender = getAccountById(senderACCNO);
-//            if(sender ==null){
-//                System.out.println("com.shubham.Account not found.");
-//                connection.rollback();
-//                return;
-//            }
-//
-//            if(sender.getBalance()<money){
-//                System.out.println("Insufficient Amount.");
-//                connection.rollback();
-//                return;
-//            }
-//
-//            Double newBalance = sender.getBalance() - money;
-//            try(
-//                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            ){
-//                preparedStatement.setDouble(1,newBalance);
-//                preparedStatement.setString(2,senderACCNO);
-//                preparedStatement.setString(3,pin);
-//                int rows = preparedStatement.executeUpdate();
-//                if (rows == 0) {
-//                    System.out.println("Invalid sender number or PIN.");
-//                    connection.rollback();
-//                    return;
-//                }
-//            }
-//            bankTransaction transaction = new bankTransaction(
-//                    senderACCNO,
-//                    bankTransaction.TransactionType.TRANSFER_OUT,
-//                    money,
-//                    newBalance
-//            );
-//            transactionDAO.doTransaction(connection,transaction);
-//
-//
-//            Double newBalance1 = receiver.getBalance() + money;
-//            try(
-//                    PreparedStatement preparedStatement = connection.prepareStatement(sql1);
-//            ){
-//                preparedStatement.setDouble(1,newBalance1);
-//                preparedStatement.setString(2,receiverACCNO);
-//                int rows = preparedStatement.executeUpdate();
-//                if (rows == 0) {
-//                    System.out.println("Invalid sender number or PIN.");
-//                    connection.rollback();
-//                    return;
-//                }
-//            }
-//            bankTransaction transaction1 = new bankTransaction(
-//                    receiverACCNO,
-//                    bankTransaction.TransactionType.TRANSFER_IN,
-//                    money,
-//                    newBalance1
-//            );
-//            transactionDAO.doTransaction(connection, transaction1);
-//            connection.commit();
-//            System.out.println("Transfer Successful.");
-//            System.out.println("Updated Balance : ₹"+newBalance);
-//        } catch (SQLException e) {
-//            if(connection!=null){
-//                try {
-//                    connection.rollback();
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//            e.printStackTrace();
-//        }
-//        finally {
-//            if(connection!=null){
-//                try {
-//                    connection.setAutoCommit(true);
-//                    connection.close();
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-//
+    public void transfer(String senderACCNO, String receiverACCNO, Double money, String pin){
+        try (
+                Session session = sessionFactory.openSession();
+        ) {
+            Transaction transaction = session.beginTransaction();
+            try {
+                Account account = session.find(Account.class, senderACCNO);
+                if (account == null) {
+                    System.out.println("Sender's Account not found.");
+                    transaction.rollback();
+                    return;
+                }
+                Account account1 = session.find(Account.class, receiverACCNO);
+                if (account1 == null) {
+                    System.out.println("Receiver's Account not found.");
+                    transaction.rollback();
+                    return;
+                }
+                if(senderACCNO.equals(receiverACCNO)){
+                    System.out.println("Invalid transfer.");
+                    transaction.rollback();
+                    return;
+                    }
+                if (!account.getPin().equals(pin)) {
+                    System.out.println("Invalid PIN.");
+                    transaction.rollback();
+                    return;
+                }
+                Double newBalance = account.getBalance()-money;
+                Double newBalance1 = account1.getBalance()+money;
+                account.setBalance(newBalance);
+                account1.setBalance(newBalance1);
+                bankTransaction bankTxn = new bankTransaction(
+                        senderACCNO,
+                        bankTransaction.TransactionType.TRANSFER_OUT,
+                        money,
+                        newBalance
+                );
+                bankTransaction bankTxn1 = new bankTransaction(
+                        receiverACCNO,
+                        bankTransaction.TransactionType.TRANSFER_IN,
+                        money,
+                        newBalance1
+                );
+                transactionDAO.doTransaction(bankTxn,session);
+                transactionDAO.doTransaction(bankTxn1,session);
+                session.merge(account);
+                session.merge(account1);
+                transaction.commit();
+                System.out.println("Transfer Successful.");
+                System.out.println("Updated Balance : ₹" + newBalance);
+            }catch (Exception e) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
+        }
+    }
+
 //    public void changePin(String accountNumber ,String pin, String currentPin){
 //        String sql = "UPDATE account SET pin = ? WHERE accountNumber = ? AND pin = ?";
 //        try (

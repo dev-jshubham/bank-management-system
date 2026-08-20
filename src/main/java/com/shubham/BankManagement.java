@@ -32,7 +32,7 @@ public class BankManagement {
                 case 4 -> viewAccount();
                 case 5 -> depositMoney();
                 case 6 -> withdrawMoney();
-//                case 7 -> transferMoney();
+                case 7 -> transferMoney();
                 case 8 -> transactionHistory();
 //                case 9 -> changePin();
                 case 10 -> {
@@ -73,12 +73,12 @@ public class BankManagement {
         if (fetchedCustomer != null) {
             System.out.println(fetchedCustomer);
         } else {
-            System.out.println("com.shubham.Customer not found.");
+            System.out.println("Customer not found.");
         }
     }
 
     private void openAccount() {
-        System.out.println("Enter com.shubham.Customer ID:");
+        System.out.println("Enter Customer ID:");
         Customer fetchedCustomer = customerDAO.getCustomerById(input.checkInt());
         if (fetchedCustomer == null) {
             System.out.println("Customer not found.");
@@ -135,13 +135,6 @@ public class BankManagement {
     private void withdrawMoney() {
         System.out.println("Enter your account number (e.g. ACC0000) :");
         String accountNumber = input.checkString();
-        Account fetchedAccount = accountDAO.getAccountById(accountNumber);
-        if (fetchedAccount != null) {
-            System.out.println(fetchedAccount);
-        } else {
-            System.out.println("com.shubham.Account not found.");
-            return;
-        }
         System.out.println("Enter amount:");
         Double money = input.checkMoney();
         System.out.println("Enter PIN:");
@@ -149,25 +142,17 @@ public class BankManagement {
         accountDAO.withdraw(accountNumber, money,pin);
     }
 
-//    private void transferMoney() {
-//        System.out.println("Enter Sender com.shubham.Account Number:");
-//        String senderACCNO = input.checkAccountNumber();
-//        System.out.println("Enter Receiver com.shubham.Account Number:");
-//        String receiverACCNO = input.checkAccountNumber();
-//        Account fetchedAccount = accountDAO.getAccountById(senderACCNO);
-//        if (fetchedAccount != null) {
-//            System.out.println(fetchedAccount);
-//        }
-//        else{
-//            System.out.println("Sender account not found.");
-//            return;
-//        }
-//        System.out.println("Enter amount:");
-//        Double money = input.checkMoney();
-//        System.out.println("Enter PIN:");
-//        String pin = input.checkPinString();
-//        accountDAO.transfer(senderACCNO, receiverACCNO,money,pin);
-//    }
+    private void transferMoney() {
+        System.out.println("Enter Sender Account Number:");
+        String senderACCNO = input.checkAccountNumber();
+        System.out.println("Enter Receiver Account Number:");
+        String receiverACCNO = input.checkAccountNumber();
+        System.out.println("Enter amount:");
+        Double money = input.checkMoney();
+        System.out.println("Enter PIN:");
+        String pin = input.checkPinString();
+        accountDAO.transfer(senderACCNO, receiverACCNO,money,pin);
+    }
 
     private void transactionHistory() {
         System.out.println("Enter Account Number.");
