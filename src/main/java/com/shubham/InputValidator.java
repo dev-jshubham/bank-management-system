@@ -9,7 +9,7 @@ public class InputValidator {
 
     public String checkString() {
         while (true) {
-            String input = sc.nextLine();
+            String input = sc.nextLine().trim();
             if (!input.isEmpty()) {
                 return input;
             }
@@ -109,8 +109,8 @@ public class InputValidator {
 
     public String checkName() {
         while (true) {
-            String name = sc.nextLine();
-            if (name.matches("[a-zA-Z ]+")) {
+            String name = sc.nextLine().trim();
+            if (!name.isEmpty()&&name.matches("[a-zA-Z ]+")) {
                 return name;
             } else {
                 System.out.println("Invalid Input! Please try again.");

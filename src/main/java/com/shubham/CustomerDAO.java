@@ -8,23 +8,25 @@ import org.hibernate.cfg.Configuration;
 public class CustomerDAO {
 
     private final SessionFactory sessionFactory;
+
     public CustomerDAO(){
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        configuration.addAnnotatedClass(Customer.class);
-        sessionFactory = configuration.buildSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public void addCustomer(Customer customer) {
-        try (
-                Session session = sessionFactory.openSession();
-        )
-        {
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.persist(customer);
-            transaction.commit();
+            try {
+                session.persist(customer);
+                transaction.commit();
+                System.out.println("Customer added successfully.");
+
+            } catch (Exception e) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
         }
-        }
+    }
 
     public Customer getCustomerById(int customerId) {
         try (

@@ -13,11 +13,7 @@ public class TransactionDAO {
     private final SessionFactory sessionFactory;
 
     public TransactionDAO() {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        configuration.addAnnotatedClass(Account.class);
-        configuration.addAnnotatedClass(bankTransaction.class);
-        sessionFactory = configuration.buildSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public void doTransaction(bankTransaction transaction, Session session) {

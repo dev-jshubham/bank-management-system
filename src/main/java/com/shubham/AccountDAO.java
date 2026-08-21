@@ -1,24 +1,16 @@
 package com.shubham;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import java.sql.SQLException;
-import java.util.Objects;
 
 public class AccountDAO {
 
-    private final SessionFactory sessionFactory;
     private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final SessionFactory sessionFactory;
 
     public AccountDAO() {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        configuration.addAnnotatedClass(Account.class);
-        configuration.addAnnotatedClass(bankTransaction.class);
-        sessionFactory = configuration.buildSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public void createAccount(Account account) {
@@ -26,8 +18,15 @@ public class AccountDAO {
                 Session session = sessionFactory.openSession();
         ) {
             Transaction transaction = session.beginTransaction();
-            session.persist(account);
-            transaction.commit();
+            try {
+                session.persist(account);
+                transaction.commit();
+                System.out.println("Account added successfully.");
+
+            } catch (Exception e) {
+                transaction.rollback();
+                e.printStackTrace();
+            }
         }
     }
 
