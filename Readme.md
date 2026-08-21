@@ -2,12 +2,13 @@
 
 # 🏦 Bank Management System
 
-### A Console-Based Banking Application built with Java, JDBC & MySQL
+### A Console-Based Banking Application built with Java, Hibernate & MySQL
 
-[![Java](https://img.shields.io/badge/Java-17-maroon?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0-darkblue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![Status](https://img.shields.io/badge/Status-In%20Development-indigo?style=for-the-badge)](#-roadmap--current-status)
-[![Status](https://img.shields.io/badge/STAGE-4-magenta?style=for-the-badge)](#-roadmap--current-status)
+[![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Hibernate](https://img.shields.io/badge/Hibernate-ORM-59666C?style=for-the-badge&logo=hibernate&logoColor=white)](https://hibernate.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Maven](https://img.shields.io/badge/Maven-Build%20Tool-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)](#-roadmap--status)
 [![License](https://img.shields.io/badge/License-MIT-darkgreen?style=for-the-badge)](LICENSE)
 
 </div>
@@ -16,28 +17,25 @@
 
 ## 📌 Overview
 
-**Bank Management System** is a console-based banking application built using **Java**, **JDBC**, and **MySQL**. It simulates real-world banking operations — customer onboarding, account management, deposits, withdrawals, and fund transfers — while following **object-oriented design principles** and a **layered architecture** based on the **DAO (Data Access Object) pattern**.
+**Bank Management System** is a console-based banking application built with **Java, Hibernate ORM (JPA), and MySQL**. It simulates core banking operations — customer registration, account management, deposits, withdrawals, transfers, PIN management, and transaction history.
 
-All customer, account, and transaction data is persisted in a relational MySQL database.
+The project follows the **DAO (Data Access Object) pattern**, uses a centralized `HibernateUtil` for a shared `SessionFactory`, and applies Hibernate transactions to keep operations like fund transfers atomic.
 
-> 🎯 **Objective:** To build a backend-focused banking application that demonstrates database integration, data integrity, robust exception handling, and clean, maintainable code organization using core Java.
->
-> This is an active learning project — see [Current Status](#-roadmap--current-status) below for what's implemented vs. planned.
+> 🎯 **Objective:** Build a backend-focused banking application demonstrating Java, Hibernate, relational database design, transaction management, and clean code organization.
+
+> ✅ **Status:** The current planned scope is complete. Development is paused while I move on to new backend projects.
 
 ---
 
 ## 📋 Table of Contents
 
 - [Features](#-features)
-- [Tech Stack](#-tech-stack)
+- [Tech & Concepts](#-tech--concepts)
 - [Architecture](#-architecture)
-- [Database Schema](#-database-schema)
+- [Entity Relationship](#-entity-relationship)
 - [Getting Started](#-getting-started)
 - [Usage](#-usage)
-- [Java Concepts Used](#-java-concepts-used)
-- [Skills Demonstrated](#-skills-demonstrated)
-- [Learning Outcomes](#-learning-outcomes)
-- [Roadmap & Current Status](#-roadmap--current-status)
+- [Roadmap & Status](#-roadmap--status)
 - [Feedback](#-feedback)
 - [License](#-license)
 
@@ -45,122 +43,51 @@ All customer, account, and transaction data is persisted in a relational MySQL d
 
 ## ✨ Features
 
-### ✅ Implemented
+- Customer registration & lookup
+- Account creation (Savings / Current) & lookup
+- Deposit, withdraw, and fund transfer with PIN verification
+- Atomic transfers using Hibernate transactions (commit/rollback)
+- Transaction history via HQL
+- PIN change
+- Centralized Hibernate config with shared `SessionFactory`
 
-- com.shubham.Customer registration with core details (name, DOB, contact, ID proof)
-- com.shubham.Account creation linked to a customer (Savings / Current)
-- Normalized relational schema — `com.shubham.Customer → com.shubham.Account → com.shubham.bankTransaction` with foreign keys
-- DAO layer for com.shubham.Customer, com.shubham.Account, and com.shubham.bankTransaction persistence
-- View account details and balance
-- Deposit, withdrawal, and fund transfer logic (atomic — commit/rollback)
-- com.shubham.bankTransaction history / statement generation
-
-### 🔜 In Progress / Planned
-
-- Admin panel for managing customers and accounts
-- Login authentication with hashed passwords *(not yet implemented — see note below)*
-
-> **Note on security fields:** the schema includes `Password` column for future authentication. These are **not yet hashed/encrypted** — that's part of the upcoming work, not a claim about the current state.
+**🔐 Security Note:** Passwords and PINs are stored as plain values for learning purposes — hashing is planned for a future version.
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech & Concepts
 
-<p align="left">
+**Stack:** Java 25 · Hibernate ORM · JPA · MySQL 8 · Maven · Git
 
-<img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+**Java:** OOP (encapsulation, enums), exception handling, `List`, `LocalDate`/`LocalDateTime`, try-with-resources, regex, input validation, DAO pattern
 
-<img src="https://img.shields.io/badge/JDBC-Database-4A90E2?style=for-the-badge" alt="JDBC">
-
-<img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-
-<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git">
-
-<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
-
-<img src="https://img.shields.io/badge/IntelliJ_IDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white" alt="IntelliJ IDEA">
-
-</p>
+**Hibernate:** `SessionFactory` & `Session`, `persist`/`find`/`merge`, transactions (commit/rollback), HQL queries, dirty checking
 
 ---
 
 ## 🏗 Architecture
 
-The project follows a **layered architecture** built around the **DAO (Data Access Object) pattern**, separating presentation, business logic, and data access.
-
 ```mermaid
 flowchart TD
-    A[Console UI Layer<br/>Menu-driven user interaction] --> B[Service / Business Logic Layer<br/>Core banking rules & validation]
-    B --> C[DAO Layer<br/>com.shubham.CustomerDAO · com.shubham.AccountDAO · com.shubham.TransactionDAO]
-    C --> D[JDBC Connection Layer]
-    D --> E[(MySQL Database)]
+    A[Console UI Layer<br/>BankManagement] --> B[Input Validation Layer<br/>InputValidator]
+    B --> C[DAO Layer<br/>CustomerDAO · AccountDAO · TransactionDAO]
+    C --> D[Hibernate ORM Layer<br/>Session · Transaction · HQL]
+    D --> E[HibernateUtil<br/>Shared SessionFactory]
+    E --> F[(MySQL Database)]
 ```
 
-**Project Structure:**
 ```
 BankManagementSystem/
-│
-├── Database/
-│   └── schema.sql
-│
-├── src/
-│   ├── com.shubham.Account.java
-│   ├── com.shubham.AccountDAO.java
-│   ├── com.shubham.BankManagement.java
-│   ├── com.shubham.Customer.java
-│   ├── com.shubham.CustomerDAO.java
-│   ├── DBConnection.java
-│   ├── com.shubham.Main.java
-│   ├── com.shubham.bankTransaction.java
-│   └── com.shubham.TransactionDAO.java
-│
-├── .gitignore
-└── README.md
+├── Database/schema.sql
+├── src/main/java/com/shubham/
+│   ├── Account.java, AccountDAO.java
+│   ├── Customer.java, CustomerDAO.java
+│   ├── bankTransaction.java, TransactionDAO.java
+│   ├── HibernateUtil.java, InputValidator.java
+│   └── BankManagement.java, Main.java
+├── src/main/resources/hibernate.cfg.xml
+└── pom.xml
 ```
-
----
-
-## 🗃 Database Schema
-
-### com.shubham.Customer
-
-| Column | Description |
-|---------|-------------|
-| com.shubham.Customer ID | Primary key, auto-generated |
-| Name | Full name of the customer |
-| Date of Birth | com.shubham.Customer's DOB |
-| Gender | com.shubham.Customer's gender |
-| Phone Number | Unique contact number |
-| Email | com.shubham.Customer's email address |
-| Address | Residential address |
-| ID Proof Type | Type of identification document |
-| ID Proof Number | Unique identification number |
-| Password | Login credential *(plaintext currently — hashing planned)* |
-| Registration Date | com.shubham.Customer registration timestamp |
-| Active Status | Indicates whether the customer account is active |
-
-### com.shubham.Account
-
-| Column | Description |
-|---------|-------------|
-| com.shubham.Account Number | Primary key |
-| com.shubham.Customer ID | Foreign key referencing **com.shubham.Customer** |
-| com.shubham.Account Type | Savings / Current |
-| Balance | Current account balance |
-| Status | Active / Blocked / Closed |
-| Opened Date | com.shubham.Account opening timestamp |
-| PIN | com.shubham.bankTransaction PIN *(plaintext currently — hashing planned)* |
-
-### com.shubham.bankTransaction
-
-| Column | Description |
-|---------|-------------|
-| com.shubham.bankTransaction ID | Primary key, auto-generated |
-| com.shubham.Account Number | Foreign key referencing **com.shubham.Account** |
-| com.shubham.bankTransaction Type | Deposit / Withdraw / Transfer In / Transfer Out |
-| Amount | com.shubham.bankTransaction amount |
-| Balance After | com.shubham.Account balance after the transaction |
-| com.shubham.bankTransaction Date | Timestamp of the transaction |
 
 ---
 
@@ -174,159 +101,102 @@ erDiagram
     CUSTOMER {
         int customerId PK
         string name
+        date dob
+        string gender
         string phoneNumber
         string email
     }
-
     ACCOUNT {
         string accountNumber PK
         int customerId FK
         string accountType
         decimal balance
+        string status
     }
-
     TRANSACTION {
         int transactionId PK
         string accountNumber FK
         string transactionType
         decimal amount
         decimal balanceAfter
+        datetime transactionDate
     }
 ```
+
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Java Development Kit (JDK 17 or higher)
-- MySQL Server (8.0+)
-- IntelliJ IDEA / Eclipse / any Java IDE
-- MySQL Connector/J (JDBC Driver)
-
----
-
-## 🚀 Installation
-
-### 1. Clone the repository
+**Prerequisites:** JDK 25 · MySQL 8+ · Maven · IntelliJ IDEA (or any Java IDE)
 
 ```bash
+# 1. Clone
 git clone https://github.com/dev-jshubham/bank-management-system.git
 cd bank-management-system
+
+# 2. Create an empty database
+# CREATE DATABASE project2_bms;
+# (Hibernate will auto-create the tables on first run)
+
+# 3. Configure Hibernate — update src/main/resources/hibernate.cfg.xml
+#    with your DB URL, username, and password
+
+# 4. Install dependencies
+mvn clean install
+
+# 5. Run
+# src/main/java/com/shubham/Main.java
 ```
 
-### 2. Set up the database
-
-Open **MySQL Workbench** (or any MySQL client) and execute the `Database/schema.sql` file to create the database and required tables.
-
-### 3. Configure the database connection
-
-Rename `com.shubham.DBConnectionExample.java` to `DBConnection.java`, then update the database credentials according to your local MySQL setup.
-
-```java
-private static final String URL = "jdbc:mysql://localhost:3306/project2_bms";
-private static final String USER = "your_mysql_username";   // e.g., root
-private static final String PASSWORD = "your_password";
-```
-
-### 4. Add the MySQL JDBC Driver
-
-Add the **MySQL Connector/J (JDBC Driver)** to your project if it is not already configured.
-
-### 5. Open the project
-
-Open the project in **IntelliJ IDEA** (or any Java IDE).
-
-### 6. Run the application
-
-Run the `com.shubham.Main.java` class to start the **Bank Management System**.
+> ⚠️ Never commit real database credentials to GitHub.
 
 ---
 
 ## 💻 Usage
 
-Once launched, the application presents a menu-driven console interface:
-
 ```
-====== BANK MANAGEMENT SYSTEM ======
-1. Register New com.shubham.Customer
-2. Open New com.shubham.Account
-3. Deposit Money
-4. Withdraw Money
-5. Transfer Funds
-6. View com.shubham.Account Details
-7. View com.shubham.bankTransaction History
-8. Exit
-=====================================
-Enter your choice:
+========== BANK MANAGEMENT SYSTEM ==========
+1. Register Customer      6. Withdraw Money
+2. View Customer          7. Transfer Money
+3. Open Account            8. View History
+4. View Account            9. Change PIN
+5. Deposit Money           10. Exit
 ```
 
-> Menu options 3–5 and 7 reflect the target feature set; see [Roadmap](#-roadmap--current-status) for what's live today.
+**Transfer flow** (all steps run inside a single Hibernate transaction, rolled back on failure):
+
+```
+Sender & Receiver Account → Verify Both Accounts → Verify Sender PIN
+   → Update Sender Balance → Update Receiver Balance
+   → Record TRANSFER_OUT & TRANSFER_IN → Commit
+```
+
+Deposit and Withdraw follow the same pattern: **validate → update balance → record transaction → commit**.
 
 ---
 
-## 🧠 Java Concepts Used
-
-- **Object-Oriented Programming (OOP)** — Classes & Objects, Encapsulation, Inheritance
-- **Exception Handling** — Custom & built-in exceptions for robust error management
-- **JDBC API**
-    - `PreparedStatement` for parameterized, injection-safe queries
-    - `ResultSet` for processing query results
-    - `Try-with-Resources` for automatic resource management
-- **Layered Architecture** with the **DAO Pattern** for clean separation of concerns
-
----
-
-## 🎯 Skills Demonstrated
-
-- Backend Development
-- Database Design & Normalization
-- SQL Query Writing
-- JDBC Integration
-- Exception Handling
-- DAO Design Pattern
-- Relational Database Management
-- Version Control with Git
-
----
-
-## 📚 Learning Outcomes
-
-Through this project, the following practical skills were developed:
-
-- Designing normalized relational databases with proper foreign keys
-- Connecting Java applications to MySQL using JDBC
-- Performing CRUD operations through JDBC
-- Organizing code using the DAO design pattern
-- Writing modular, maintainable backend code
-- Handling SQL and Java exceptions effectively
-
----
-
-## 🗺 Roadmap & Current Status
+## 🗺 Roadmap & Status
 
 | Stage | Description | Status |
 |---|---|---|
-| 1 | Model classes — com.shubham.Customer, com.shubham.Account, com.shubham.bankTransaction | ✅ Completed |
-| 2 | JDBC + MySQL integration (DAO layer) | ✅ Completed |
-| 3 | Core banking logic — deposit, withdraw, transfer with rollback | ✅ Completed |
-| 4 | Admin panel & reporting | 🔄 In Progress |
-| 5 | Password/PIN hashing | 🔜 Planned |
-| 6 | Unit testing with JUnit | 🔜 Planned |
-| — | GUI (JavaFX/Swing) or REST API (Spring Boot) | 💭 Future idea |
+| 1 | Model classes (Customer, Account, BankTransaction) | ✅ |
+| 2 | JDBC + MySQL integration (DAO layer) | ✅ |
+| 3 | Core banking logic — deposit, withdraw, transfer | ✅ |
+| 4 | Hibernate ORM migration & DAO refactoring | ✅ |
+| 5 | PIN management & transaction history | ✅ |
+| — | Admin panel, password/PIN hashing, login, REST API | 💭 Future |
 
 ---
 
 ## 💬 Feedback
 
-This is a personal learning project built to practice backend fundamentals. Suggestions, code review, or feedback are welcome via [Issues](https://github.com/dev-jshubham/bank-management-system/issues) — I'm actively iterating on it.
+This is a personal learning project focused on Java backend development, Hibernate ORM, and database design. Feedback and suggestions are welcome via [GitHub Issues](https://github.com/dev-jshubham/bank-management-system/issues).
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
+Licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
