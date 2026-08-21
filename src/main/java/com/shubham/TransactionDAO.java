@@ -20,7 +20,7 @@ public class TransactionDAO {
         sessionFactory = configuration.buildSessionFactory();
     }
 
-    public void doTransaction(bankTransaction transaction, Session session) throws  SQLException{
+    public void doTransaction(bankTransaction transaction, Session session) {
         session.persist(transaction);
         System.out.println("Transaction recorded successfully.");
     }

@@ -47,7 +47,7 @@ public class AccountDAO {
                 Transaction transaction = session.beginTransaction();
                 try {
                     Account account = session.find(Account.class, accountNumber);
-                    if (getAccountById(accountNumber) == null) {
+                    if (account == null) {
                         System.out.println("Account not found.");
                         transaction.rollback();
                         return;
@@ -66,7 +66,6 @@ public class AccountDAO {
                             newBalance
                     );
                     transactionDAO.doTransaction(bankTxn,session);
-                    session.merge(account);
                     transaction.commit();
                     System.out.println("Deposit Successful.");
                     System.out.println("Updated Balance : ₹" + newBalance);
@@ -84,13 +83,18 @@ public class AccountDAO {
                 Transaction transaction = session.beginTransaction();
             try {
                 Account account = session.find(Account.class, accountNumber);
-                if (getAccountById(accountNumber) == null) {
+                if (account == null) {
                     System.out.println("Account not found.");
                     transaction.rollback();
                     return;
                 }
                 if (!account.getPin().equals(pin)) {
                     System.out.println("Invalid PIN.");
+                    transaction.rollback();
+                    return;
+                }
+                if (money > account.getBalance()) {
+                    System.out.println("Insufficient balance.");
                     transaction.rollback();
                     return;
                 }
@@ -103,7 +107,6 @@ public class AccountDAO {
                         newBalance
                 );
                 transactionDAO.doTransaction(bankTxn, session);
-                session.merge(account);
                 transaction.commit();
                 System.out.println("Withdraw Successful.");
                 System.out.println("Updated Balance : ₹" + newBalance);
@@ -143,6 +146,11 @@ public class AccountDAO {
                     transaction.rollback();
                     return;
                 }
+                if (money > account.getBalance()) {
+                    System.out.println("Insufficient balance.");
+                    transaction.rollback();
+                    return;
+                }
                 Double newBalance = account.getBalance()-money;
                 Double newBalance1 = account1.getBalance()+money;
                 account.setBalance(newBalance);
@@ -161,8 +169,6 @@ public class AccountDAO {
                 );
                 transactionDAO.doTransaction(bankTxn,session);
                 transactionDAO.doTransaction(bankTxn1,session);
-                session.merge(account);
-                session.merge(account1);
                 transaction.commit();
                 System.out.println("Transfer Successful.");
                 System.out.println("Updated Balance : ₹" + newBalance);
@@ -179,9 +185,19 @@ public class AccountDAO {
         ) {
             Transaction transaction = session.beginTransaction();
             Account account = session.find(Account.class,accountNumber);
+            if (account == null) {
+                System.out.println("Account not found.");
+                transaction.rollback();
+                return;
+            }
+            if(!account.getPin().equals(currentPin)){
+                System.out.println("Wrong PIN.");
+                transaction.rollback();
+                return;
+            }
             account.setPin(pin);
-            session.merge(account);
             transaction.commit();
+            System.out.println("PIN changed successfully.");
         }
     }
 
